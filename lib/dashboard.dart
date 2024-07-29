@@ -3,8 +3,120 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  String? _fullName = '';
+  String? _tokenAPI = '';
+
+  String urlAPIExternal = 'http://103.209.6.32:8080/cct-api/api';
+  String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initProcess();
+  }
+
+  Future<void> _initProcess() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    await getLoginSession();
+    if (_tokenAPI != null) {
+      await dailyRemainderLoad();
+      await monthlyRemainderLoad();
+      await monthlyRankingLoad();
+    }
+  }
+
+  Future<void> getLoginSession() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Ambil nilai dari SharedPreferences
+    String? fullName = prefs.getString('full_name');
+    String? token = prefs.getString('token');
+    // Update state dengan nilai yang diambil
+    setState(() {
+      _fullName = fullName;
+      _tokenAPI = token;
+    });
+  }
+
+  Future<void> dailyRemainderLoad() async {
+    String url = urlAPI + '/dashboard/daily-remainder';
+    try {
+      var response = await http.get(
+        Uri.parse(url),
+        headers: {'Authorization': 'Bearer $_tokenAPI'},
+      );
+
+      print(response.body);
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body);
+        print("RESPONSE API DAILY REMAINDER : $jsonResponse");
+      }
+    } on http.ClientException catch (e) {
+      // Handle socket exception - connection timeout
+      print('SocketException: ${e.message}');
+      print('URL:\n${e.uri}');
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  Future<void> monthlyRemainderLoad() async {
+    String url = urlAPI + '/dashboard/monthly-remainder';
+    try {
+      var response = await http.get(
+        Uri.parse(url),
+        headers: {'Authorization': 'Bearer $_tokenAPI'},
+      );
+
+      print(response.body);
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body);
+        print("RESPONSE API MONTHLY REMAINDER : $jsonResponse");
+      }
+    } on http.ClientException catch (e) {
+      // Handle socket exception - connection timeout
+      print('SocketException: ${e.message}');
+      print('URL:\n${e.uri}');
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  Future<void> monthlyRankingLoad() async {
+    String url = urlAPI + '/dashboard/monthly-ranking';
+    try {
+      var response = await http.get(
+        Uri.parse(url),
+        headers: {'Authorization': 'Bearer $_tokenAPI'},
+      );
+
+      print(response.body);
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body);
+        print("RESPONSE API MONTHLY RANKING : $jsonResponse");
+      }
+    } on http.ClientException catch (e) {
+      // Handle socket exception - connection timeout
+      print('SocketException: ${e.message}');
+      print('URL:\n${e.uri}');
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,7 +197,7 @@ class Dashboard extends StatelessWidget {
                                 fontFamily: 'Cjfont',
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold)),
-                        Text("FIRQY SUTANWALIYAH IKHSAN",
+                        Text(_fullName ?? 'ANONYMOUS',
                             textAlign: TextAlign.left,
                             style: TextStyle(
                                 fontSize: 16,

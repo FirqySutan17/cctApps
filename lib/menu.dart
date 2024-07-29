@@ -3,8 +3,34 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Menu extends StatelessWidget {
+class Menu extends StatefulWidget {
+  const Menu({super.key});
+
+  @override
+  State<Menu> createState() => _MenuState();
+}
+
+class _MenuState extends State<Menu> {
+  String? _fullName = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getLoginSession();
+  }
+
+  Future<void> getLoginSession() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Ambil nilai dari SharedPreferences
+    String? fullName = prefs.getString('full_name');
+    // Update state dengan nilai yang diambil
+    setState(() {
+      _fullName = fullName;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,7 +111,7 @@ class Menu extends StatelessWidget {
                         //         fontFamily: 'Cjfont',
                         //         color: Colors.white,
                         //         fontWeight: FontWeight.bold)),
-                        Text("FIRQY SUTANWALIYAH IKHSAN",
+                        Text(_fullName ?? 'ANONYMOUS',
                             textAlign: TextAlign.left,
                             style: TextStyle(
                                 fontSize: 16,

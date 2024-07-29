@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -12,7 +15,77 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
   bool passwordVisible = false;
+  bool _isLoading = false;
+
+  Future<void> loginAction() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    String urlAPI = 'http://103.209.6.32:8080/cct-api/api/login';
+    urlAPI = 'http://10.137.26.67:8080/cct-api/api/login';
+    try {
+      var response = await http.post(
+        Uri.parse(urlAPI),
+        body: {
+          'username': _usernameController.text,
+          'password': _passwordController.text,
+          'company': 'FEED',
+          'apiversion': '0.1'
+        },
+      );
+
+      print(response.body);
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body);
+        print(jsonResponse["data"]["token"]);
+        String token =
+            jsonResponse["data"]["token"]; // Misalnya API mengembalikan token
+
+        // Simpan token atau status login di SharedPreferences
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', token);
+        await prefs.setString(
+            'full_name', jsonResponse["data"]["user"]["FULL_NAME"]);
+
+        // Redirect ke halaman beranda atau lakukan sesuatu setelah login berhasil
+        Navigator.pushReplacementNamed(context, '/dashboard');
+      } else {
+        // Handle jika login gagal
+        // Misalnya menampilkan pesan error
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Login Gagal'),
+              content: Text('Username atau Password salah.'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } on http.ClientException catch (e) {
+      // Handle socket exception - connection timeout
+      print('SocketException: ${e.message}');
+      print('URL:\n${e.uri}');
+    } catch (e) {
+      print('Error: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -33,7 +106,11 @@ class _LoginState extends State<Login> {
       //     // backgroundColor: Color(0xff006dcd),
       //     elevation: 0
       // ),
-      body: content(),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : content(),
     );
   }
 
@@ -99,6 +176,7 @@ class _LoginState extends State<Login> {
                             fillColor: Colors.white,
                             filled: true,
                           ),
+                          controller: _usernameController,
                         ),
                       ),
                       SizedBox(
@@ -133,6 +211,7 @@ class _LoginState extends State<Login> {
                           ),
                           keyboardType: TextInputType.visiblePassword,
                           textInputAction: TextInputAction.done,
+                          controller: _passwordController,
                         ),
                       ),
                       SizedBox(
@@ -165,8 +244,7 @@ class _LoginState extends State<Login> {
                         child: TextButton(
                           // style: TextButton.styleFrom(backgroundColor: Color(0xff007dc3)),
                           onPressed: () {
-                            Navigator.of(context)
-                                .pushReplacementNamed('/dashboard');
+                            loginAction();
                           },
                           child: Text(
                             "SIGN IN",
