@@ -26,7 +26,7 @@ class _LoginState extends State<Login> {
     });
 
     String urlAPI = 'http://103.209.6.32:8080/cct-api/api/login';
-    urlAPI = 'http://10.137.26.67:8080/cct-api/api/login';
+    // urlAPI = 'http://10.137.26.67:8080/cct-api/api/login';
     try {
       var response = await http.post(
         Uri.parse(urlAPI),
@@ -115,7 +115,7 @@ class _LoginState extends State<Login> {
   }
 
   Widget content() {
-    double heightForStack = (MediaQuery.of(context).size.height - 410);
+    double heightForStack = (MediaQuery.of(context).size.height - 350);
     return Container(
       child: SingleChildScrollView(
         child: Column(
@@ -215,7 +215,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       SizedBox(
-                        height: 25,
+                        height: 75,
                       ),
                       Container(
                         width: double.infinity,
@@ -259,6 +259,9 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               ),
+            ),
+            SizedBox(
+              height: 75,
             ),
             Container(
               height: 100,
