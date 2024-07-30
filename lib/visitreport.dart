@@ -17,6 +17,47 @@ class VisitReport extends StatelessWidget {
     );
   }
 
+  void showDialogWithFields(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        var emailController = TextEditingController();
+        var messageController = TextEditingController();
+        return AlertDialog(
+          title: Text('Contact Us'),
+          content: ListView(
+            shrinkWrap: true,
+            children: [
+              TextFormField(
+                controller: emailController,
+                decoration: InputDecoration(hintText: 'Email'),
+              ),
+              TextFormField(
+                controller: messageController,
+                decoration: InputDecoration(hintText: 'Message'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Send them to your email maybe?
+                var email = emailController.text;
+                var message = messageController.text;
+                Navigator.pop(context);
+              },
+              child: Text('Send'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Widget content(BuildContext context) {
     return Container(
       width: double.infinity,
@@ -119,35 +160,40 @@ class VisitReport extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  Container(
-                    width: double.infinity,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color(0xffff9304),
+                  GestureDetector(
+                    onTap: () {
+                      showDialogWithFields(context);
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color(0xffff9304),
+                      ),
+                      padding: const EdgeInsets.only(
+                          top: 10.0, bottom: 10.0, right: 20.0, left: 20.0),
+                      child: TextButton(
+                          // style: TextButton.styleFrom(backgroundColor: Color(0xff007dc3)),
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushReplacementNamed('/dashboard');
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("FILTER",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'Cjfont',
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                              Image.asset('assets/images/icon-filter.png',
+                                  width: 27, height: 27)
+                            ],
+                          )),
                     ),
-                    padding: const EdgeInsets.only(
-                        top: 10.0, bottom: 10.0, right: 20.0, left: 20.0),
-                    child: TextButton(
-                        // style: TextButton.styleFrom(backgroundColor: Color(0xff007dc3)),
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushReplacementNamed('/dashboard');
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("FILTER",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: 'Cjfont',
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold)),
-                            Image.asset('assets/images/icon-filter.png',
-                                width: 27, height: 27)
-                          ],
-                        )),
                   ),
                   SizedBox(
                     height: 20,
