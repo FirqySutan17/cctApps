@@ -79,7 +79,11 @@ class _DashboardState extends State<Dashboard> {
   String? _fullName = '';
   String? _tokenAPI = '';
 
+<<<<<<< HEAD
   String urlAPIInternal = 'http://103.209.6.32:8080/cct-api/api';
+=======
+  String urlAPIExternal = 'http://103.209.6.32:8080/cct-api/api';
+>>>>>>> a975ce40271b1f095408a6fd0cc81b6b7a542cf0
   String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
   bool _isLoading = false;
 
@@ -89,6 +93,9 @@ class _DashboardState extends State<Dashboard> {
       MonthlyRemainder(title: '', collection: '', overDue: '', badDebt: '');
 
   List<UserRanking> _runningTOP = [];
+  List<UserRanking> _runningBOTTOM = [];
+  List<UserRanking> _stopTOP = [];
+  List<UserRanking> _stopBOTTOM = [];
 
   @override
   void initState() {
@@ -179,16 +186,34 @@ class _DashboardState extends State<Dashboard> {
 
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
+        print('RUNNING BOTTOM JSON:' +
+            jsonEncode(jsonResponse["data"]["RUNNING"]["BOTTOM"]));
+        // print('RUNNING BOTTOM:' + jsonEncode(runningBOTTOM));
 
         List<dynamic> runningTOP = jsonResponse["data"]["RUNNING"]["TOP"];
+        List<dynamic> runningBOTTOM = jsonResponse["data"]["RUNNING"]["BOTTOM"];
+        List<dynamic> stopTOP = jsonResponse["data"]["STOP"]["TOP"];
+        List<dynamic> stopBOTTOM = jsonResponse["data"]["STOP"]["BOTTOM"];
         setState(() {
           _runningTOP = runningTOP
               .map((itemJson) => UserRanking.fromJSON(itemJson))
               .toList();
 
-          print('TOTAL RUNNING TOP 5 : ' + _runningTOP.length.toString());
+          _runningBOTTOM = runningBOTTOM
+              .map((itemJson) => UserRanking.fromJSON(itemJson))
+              .toList();
+
+          _stopTOP = stopTOP
+              .map((itemJson) => UserRanking.fromJSON(itemJson))
+              .toList();
+
+          _stopBOTTOM = stopBOTTOM
+              .map((itemJson) => UserRanking.fromJSON(itemJson))
+              .toList();
+
+          print(jsonResponse["data"]);
+          _isLoading = false;
         });
-        print("RUNNING TOP 5 GLOBALLY : $_runningTOP");
       }
     } on http.ClientException catch (e) {
       // Handle socket exception - connection timeout
@@ -207,7 +232,83 @@ class _DashboardState extends State<Dashboard> {
       // decoration: BoxDecoration(
       //     image: DecorationImage(image: AssetImage('assets/images/bg-blue.jpg'), fit: BoxFit.cover),
       // ),
-      body: content(context),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : content(context),
+    );
+  }
+
+  Widget rankingName(String name) {
+    return Container(
+      alignment: Alignment.center,
+      width: 170.0,
+      height: 55.0,
+      color: Color(0xffffa63b),
+      margin: EdgeInsets.all(1.0),
+      padding: const EdgeInsets.all(10.0),
+      child: Text(
+        name,
+        style: TextStyle(
+          color: Color(0xffffffff),
+          fontFamily: 'CjFont',
+          fontSize: 11,
+        ),
+      ),
+    );
+  }
+
+  Widget rankingColl(
+      String target, String cashIn, String percentage, bool isHeader) {
+    Color backgroundColor = isHeader ? Color(0xff006dcd) : Color(0xffedecec);
+    Color textColor = isHeader ? Colors.white : Colors.black;
+    return Row(
+      children: [
+        Container(
+          alignment: Alignment.center,
+          width: 120.0,
+          height: 55.0,
+          color: backgroundColor,
+          margin: EdgeInsets.all(1.0),
+          child: Text(
+            target,
+            style: TextStyle(
+                color: textColor,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'CjFont',
+                fontSize: 12),
+          ),
+        ),
+        Container(
+          alignment: Alignment.center,
+          width: 120.0,
+          height: 55.0,
+          color: backgroundColor,
+          margin: EdgeInsets.all(1.0),
+          child: Text(
+            cashIn,
+            style: TextStyle(
+                color: textColor,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'CjFont',
+                fontSize: 12),
+          ),
+        ),
+        Container(
+          alignment: Alignment.center,
+          width: 120.0,
+          height: 55.0,
+          color: backgroundColor,
+          margin: EdgeInsets.all(1.0),
+          child: Text(
+            percentage,
+            style: TextStyle(
+                color: textColor,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'CjFont',
+                fontSize: 12),
+          ),
+        ),
+      ],
     );
   }
 
@@ -657,49 +758,11 @@ class _DashboardState extends State<Dashboard> {
                                     fontSize: 12),
                               ),
                             ),
-                            Container(
-                              width: 170.0,
-                              child: _runningTOP.isNotEmpty
-                                  ? ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: _runningTOP.length,
-                                      itemBuilder: (context, index) {
-                                        UserRanking userRanking =
-                                            _runningTOP[index];
-                                        return Container(
-                                          alignment: Alignment.center,
-                                          width: 170.0,
-                                          height: 55.0,
-                                          color: Color(0xffffa63b),
-                                          margin: EdgeInsets.all(1.0),
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Text(
-                                            userRanking.employeeID,
-                                            style: TextStyle(
-                                              color: Color(0xffffffff),
-                                              fontFamily: 'CjFont',
-                                              fontSize: 11,
-                                            ),
-                                          ),
-                                        );
-                                      })
-                                  : Container(
-                                      alignment: Alignment.center,
-                                      width: 170.0,
-                                      height: 55.0,
-                                      color: Color(0xffffa63b),
-                                      margin: EdgeInsets.all(1.0),
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Text(
-                                        'NO',
-                                        style: TextStyle(
-                                          color: Color(0xffffffff),
-                                          fontFamily: 'CjFont',
-                                          fontSize: 11,
-                                        ),
-                                      ),
-                                    ),
-                            )
+                            rankingName(_runningTOP[0].employeeID),
+                            rankingName(_runningTOP[1].employeeID),
+                            rankingName(_runningTOP[2].employeeID),
+                            rankingName(_runningTOP[3].employeeID),
+                            rankingName(_runningTOP[4].employeeID),
                           ],
                         ),
                         Flexible(
@@ -708,166 +771,32 @@ class _DashboardState extends State<Dashboard> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xff006dcd),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "TARGET",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xff006dcd),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "CASH IN",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xff006dcd),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "%",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                  height: 10,
-                                ),
-                                _runningTOP.isNotEmpty
-                                    ? Container(
-                                        height: 55.0,
-                                        child: ListView.builder(
-                                            physics:
-                                                NeverScrollableScrollPhysics(),
-                                            shrinkWrap: true,
-                                            itemCount: _runningTOP.length,
-                                            itemBuilder: (context, index) {
-                                              UserRanking userRanking =
-                                                  _runningTOP[index];
-                                              print('$index item : ' +
-                                                  userRanking.employeeID);
-                                              return Row(
-                                                children: [
-                                                  Container(
-                                                    alignment: Alignment.center,
-                                                    width: 120.0,
-                                                    height: 55.0,
-                                                    color: Color(0xffedecec),
-                                                    margin: EdgeInsets.all(1.0),
-                                                    child: Text(
-                                                      "809",
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontFamily: 'CjFont',
-                                                          fontSize: 12),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    alignment: Alignment.center,
-                                                    width: 120.0,
-                                                    height: 55.0,
-                                                    color: Color(0xffedecec),
-                                                    margin: EdgeInsets.all(1.0),
-                                                    child: Text(
-                                                      "599",
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontFamily: 'CjFont',
-                                                          fontSize: 12),
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    alignment: Alignment.center,
-                                                    width: 120.0,
-                                                    height: 55.0,
-                                                    color: Color(0xffedecec),
-                                                    margin: EdgeInsets.all(1.0),
-                                                    child: Text(
-                                                      "73.96%",
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontFamily: 'CjFont',
-                                                          fontSize: 12),
-                                                    ),
-                                                  ),
-                                                ],
-                                              );
-                                            }),
-                                      )
-                                    : Row(
-                                        children: [
-                                          Container(
-                                            alignment: Alignment.center,
-                                            width: 120.0,
-                                            height: 55.0,
-                                            color: Color(0xffedecec),
-                                            margin: EdgeInsets.all(1.0),
-                                            child: Text(
-                                              "809",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontFamily: 'CjFont',
-                                                  fontSize: 12),
-                                            ),
-                                          ),
-                                          Container(
-                                            alignment: Alignment.center,
-                                            width: 120.0,
-                                            height: 55.0,
-                                            color: Color(0xffedecec),
-                                            margin: EdgeInsets.all(1.0),
-                                            child: Text(
-                                              "599",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontFamily: 'CjFont',
-                                                  fontSize: 12),
-                                            ),
-                                          ),
-                                          Container(
-                                            alignment: Alignment.center,
-                                            width: 120.0,
-                                            height: 55.0,
-                                            color: Color(0xffedecec),
-                                            margin: EdgeInsets.all(1.0),
-                                            child: Text(
-                                              "73.96%",
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontFamily: 'CjFont',
-                                                  fontSize: 12),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                rankingColl('TARGET', 'CASH IN', '%', true),
+                                rankingColl(
+                                    _runningTOP[0].target,
+                                    _runningTOP[0].cashIn,
+                                    _runningTOP[0].percentage + "%",
+                                    false),
+                                rankingColl(
+                                    _runningTOP[1].target,
+                                    _runningTOP[1].cashIn,
+                                    _runningTOP[1].percentage + "%",
+                                    false),
+                                rankingColl(
+                                    _runningTOP[2].target,
+                                    _runningTOP[2].cashIn,
+                                    _runningTOP[2].percentage + "%",
+                                    false),
+                                rankingColl(
+                                    _runningTOP[3].target,
+                                    _runningTOP[3].cashIn,
+                                    _runningTOP[3].percentage + "%",
+                                    false),
+                                rankingColl(
+                                    _runningTOP[4].target,
+                                    _runningTOP[4].cashIn,
+                                    _runningTOP[4].percentage + "%",
+                                    false),
                               ],
                             ),
                           ),
@@ -885,22 +814,23 @@ class _DashboardState extends State<Dashboard> {
                           top: 20.0, right: 15.0, left: 15.0),
                       child: Container(
                         child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text("RUNNING - JULY 2024",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: 'Cjfont',
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                              Text("BOTTOM 5",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: 'Cjfont',
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontStyle: FontStyle.italic)),
-                            ]),
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text("RUNNING - JULY 2024",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'Cjfont',
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
+                            Text("BOTTOM 5",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'Cjfont',
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic)),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -911,404 +841,62 @@ class _DashboardState extends State<Dashboard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                alignment: Alignment.center,
-                                width: 170.0,
-                                height: 55.0,
-                                color: Color(0xff006dcd),
-                                margin: EdgeInsets.all(1.0),
-                                child: Text(
-                                  "NAME",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'CjFont',
-                                      fontSize: 12),
-                                ),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              width: 170.0,
+                              height: 55.0,
+                              color: Color(0xff006dcd),
+                              margin: EdgeInsets.all(1.0),
+                              child: Text(
+                                "NAME",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'CjFont',
+                                    fontSize: 12),
                               ),
-                              Container(
-                                alignment: Alignment.center,
-                                width: 170.0,
-                                height: 55.0,
-                                color: Color(0xffffa63b),
-                                margin: EdgeInsets.all(1.0),
-                                padding: const EdgeInsets.only(
-                                    top: 5.0,
-                                    bottom: 5.0,
-                                    right: 10.0,
-                                    left: 10.0),
-                                child: Text(
-                                  "01220024 - RAHMAT SENTUH",
-                                  style: TextStyle(
-                                      color: Color(0xffffffff),
-                                      fontFamily: 'CjFont',
-                                      fontSize: 11),
-                                ),
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                width: 170.0,
-                                height: 55.0,
-                                color: Color(0xffffa63b),
-                                margin: EdgeInsets.all(1.0),
-                                padding: const EdgeInsets.only(
-                                    top: 5.0,
-                                    bottom: 5.0,
-                                    right: 10.0,
-                                    left: 10.0),
-                                child: Text(
-                                  "01120051 - SUGITO MARTONO",
-                                  style: TextStyle(
-                                      color: Color(0xffffffff),
-                                      fontFamily: 'CjFont',
-                                      fontSize: 11),
-                                ),
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                width: 170.0,
-                                height: 55.0,
-                                color: Color(0xffffa63b),
-                                margin: EdgeInsets.all(1.0),
-                                padding: const EdgeInsets.only(
-                                    top: 5.0,
-                                    bottom: 5.0,
-                                    right: 10.0,
-                                    left: 10.0),
-                                child: Text(
-                                  "05230002 - RIFKY MUSLIM GHOZALI",
-                                  style: TextStyle(
-                                      color: Color(0xffffffff),
-                                      fontFamily: 'CjFont',
-                                      fontSize: 11),
-                                ),
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                width: 170.0,
-                                height: 55.0,
-                                color: Color(0xffffa63b),
-                                margin: EdgeInsets.all(1.0),
-                                padding: const EdgeInsets.only(
-                                    top: 5.0,
-                                    bottom: 5.0,
-                                    right: 10.0,
-                                    left: 10.0),
-                                child: Text(
-                                  "02210604 - EKO YUDO PRAKOSO",
-                                  style: TextStyle(
-                                      color: Color(0xffffffff),
-                                      fontFamily: 'CjFont',
-                                      fontSize: 11),
-                                ),
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                width: 170.0,
-                                height: 55.0,
-                                color: Color(0xffffa63b),
-                                margin: EdgeInsets.all(1.0),
-                                padding: const EdgeInsets.only(
-                                    top: 5.0,
-                                    bottom: 5.0,
-                                    right: 10.0,
-                                    left: 10.0),
-                                child: Text(
-                                  "02150375 - AGUS PRIYONO",
-                                  style: TextStyle(
-                                      color: Color(0xffffffff),
-                                      fontFamily: 'CjFont',
-                                      fontSize: 11),
-                                ),
-                              ),
-                            ]),
+                            ),
+                            rankingName(_runningBOTTOM[0].employeeID),
+                            rankingName(_runningBOTTOM[1].employeeID),
+                            rankingName(_runningBOTTOM[2].employeeID),
+                            rankingName(_runningBOTTOM[3].employeeID),
+                            rankingName(_runningBOTTOM[4].employeeID),
+                          ],
+                        ),
                         Flexible(
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xff006dcd),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "TARGET",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xff006dcd),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "CASH IN",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xff006dcd),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "%",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "809",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "599",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "73.96%",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "4.548",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "3.354",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "73.74%",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "32.387",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "19.542",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "60.34%",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "3.949",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "2.072",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "52.46%",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "12.567",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "6.197",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "49.31%",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                rankingColl('TARGET', 'CASH IN', '%', true),
+                                rankingColl(
+                                    _runningBOTTOM[0].target,
+                                    _runningBOTTOM[0].cashIn,
+                                    _runningBOTTOM[0].percentage + "%",
+                                    false),
+                                rankingColl(
+                                    _runningBOTTOM[1].target,
+                                    _runningBOTTOM[1].cashIn,
+                                    _runningBOTTOM[1].percentage + "%",
+                                    false),
+                                rankingColl(
+                                    _runningBOTTOM[2].target,
+                                    _runningBOTTOM[2].cashIn,
+                                    _runningBOTTOM[2].percentage + "%",
+                                    false),
+                                rankingColl(
+                                    _runningBOTTOM[3].target,
+                                    _runningBOTTOM[3].cashIn,
+                                    _runningBOTTOM[3].percentage + "%",
+                                    false),
+                                rankingColl(
+                                    _runningBOTTOM[4].target,
+                                    _runningBOTTOM[4].cashIn,
+                                    _runningBOTTOM[4].percentage + "%",
+                                    false),
                               ],
                             ),
                           ),
@@ -1352,404 +940,62 @@ class _DashboardState extends State<Dashboard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                alignment: Alignment.center,
-                                width: 170.0,
-                                height: 55.0,
-                                color: Color(0xff006dcd),
-                                margin: EdgeInsets.all(1.0),
-                                child: Text(
-                                  "NAME",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'CjFont',
-                                      fontSize: 12),
-                                ),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              width: 170.0,
+                              height: 55.0,
+                              color: Color(0xff006dcd),
+                              margin: EdgeInsets.all(1.0),
+                              child: Text(
+                                "NAME",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'CjFont',
+                                    fontSize: 12),
                               ),
-                              Container(
-                                alignment: Alignment.center,
-                                width: 170.0,
-                                height: 55.0,
-                                color: Color(0xffffa63b),
-                                margin: EdgeInsets.all(1.0),
-                                padding: const EdgeInsets.only(
-                                    top: 5.0,
-                                    bottom: 5.0,
-                                    right: 10.0,
-                                    left: 10.0),
-                                child: Text(
-                                  "01220024 - RAHMAT SENTUH",
-                                  style: TextStyle(
-                                      color: Color(0xffffffff),
-                                      fontFamily: 'CjFont',
-                                      fontSize: 11),
-                                ),
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                width: 170.0,
-                                height: 55.0,
-                                color: Color(0xffffa63b),
-                                margin: EdgeInsets.all(1.0),
-                                padding: const EdgeInsets.only(
-                                    top: 5.0,
-                                    bottom: 5.0,
-                                    right: 10.0,
-                                    left: 10.0),
-                                child: Text(
-                                  "01120051 - SUGITO MARTONO",
-                                  style: TextStyle(
-                                      color: Color(0xffffffff),
-                                      fontFamily: 'CjFont',
-                                      fontSize: 11),
-                                ),
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                width: 170.0,
-                                height: 55.0,
-                                color: Color(0xffffa63b),
-                                margin: EdgeInsets.all(1.0),
-                                padding: const EdgeInsets.only(
-                                    top: 5.0,
-                                    bottom: 5.0,
-                                    right: 10.0,
-                                    left: 10.0),
-                                child: Text(
-                                  "05230002 - RIFKY MUSLIM GHOZALI",
-                                  style: TextStyle(
-                                      color: Color(0xffffffff),
-                                      fontFamily: 'CjFont',
-                                      fontSize: 11),
-                                ),
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                width: 170.0,
-                                height: 55.0,
-                                color: Color(0xffffa63b),
-                                margin: EdgeInsets.all(1.0),
-                                padding: const EdgeInsets.only(
-                                    top: 5.0,
-                                    bottom: 5.0,
-                                    right: 10.0,
-                                    left: 10.0),
-                                child: Text(
-                                  "02210604 - EKO YUDO PRAKOSO",
-                                  style: TextStyle(
-                                      color: Color(0xffffffff),
-                                      fontFamily: 'CjFont',
-                                      fontSize: 11),
-                                ),
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                width: 170.0,
-                                height: 55.0,
-                                color: Color(0xffffa63b),
-                                margin: EdgeInsets.all(1.0),
-                                padding: const EdgeInsets.only(
-                                    top: 5.0,
-                                    bottom: 5.0,
-                                    right: 10.0,
-                                    left: 10.0),
-                                child: Text(
-                                  "02150375 - AGUS PRIYONO",
-                                  style: TextStyle(
-                                      color: Color(0xffffffff),
-                                      fontFamily: 'CjFont',
-                                      fontSize: 11),
-                                ),
-                              ),
-                            ]),
+                            ),
+                            rankingName(_stopTOP[0].employeeID),
+                            rankingName(_stopTOP[1].employeeID),
+                            rankingName(_stopTOP[2].employeeID),
+                            rankingName(_stopTOP[3].employeeID),
+                            rankingName(_stopTOP[4].employeeID),
+                          ],
+                        ),
                         Flexible(
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xff006dcd),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "TARGET",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xff006dcd),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "CASH IN",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xff006dcd),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "%",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "809",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "599",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "73.96%",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "4.548",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "3.354",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "73.74%",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "32.387",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "19.542",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "60.34%",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "3.949",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "2.072",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "52.46%",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "12.567",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "6.197",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "49.31%",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                rankingColl('TARGET', 'CASH IN', '%', true),
+                                rankingColl(
+                                    _stopTOP[0].target,
+                                    _stopTOP[0].cashIn,
+                                    _stopTOP[0].percentage + "%",
+                                    false),
+                                rankingColl(
+                                    _stopTOP[1].target,
+                                    _stopTOP[1].cashIn,
+                                    _stopTOP[1].percentage + "%",
+                                    false),
+                                rankingColl(
+                                    _stopTOP[2].target,
+                                    _stopTOP[2].cashIn,
+                                    _stopTOP[2].percentage + "%",
+                                    false),
+                                rankingColl(
+                                    _stopTOP[3].target,
+                                    _stopTOP[3].cashIn,
+                                    _stopTOP[3].percentage + "%",
+                                    false),
+                                rankingColl(
+                                    _stopTOP[4].target,
+                                    _stopTOP[4].cashIn,
+                                    _stopTOP[4].percentage + "%",
+                                    false),
                               ],
                             ),
                           ),
@@ -1793,404 +1039,62 @@ class _DashboardState extends State<Dashboard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                alignment: Alignment.center,
-                                width: 170.0,
-                                height: 55.0,
-                                color: Color(0xff006dcd),
-                                margin: EdgeInsets.all(1.0),
-                                child: Text(
-                                  "NAME",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'CjFont',
-                                      fontSize: 12),
-                                ),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              width: 170.0,
+                              height: 55.0,
+                              color: Color(0xff006dcd),
+                              margin: EdgeInsets.all(1.0),
+                              child: Text(
+                                "NAME",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'CjFont',
+                                    fontSize: 12),
                               ),
-                              Container(
-                                alignment: Alignment.center,
-                                width: 170.0,
-                                height: 55.0,
-                                color: Color(0xffffa63b),
-                                margin: EdgeInsets.all(1.0),
-                                padding: const EdgeInsets.only(
-                                    top: 5.0,
-                                    bottom: 5.0,
-                                    right: 10.0,
-                                    left: 10.0),
-                                child: Text(
-                                  "01220024 - RAHMAT SENTUH",
-                                  style: TextStyle(
-                                      color: Color(0xffffffff),
-                                      fontFamily: 'CjFont',
-                                      fontSize: 11),
-                                ),
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                width: 170.0,
-                                height: 55.0,
-                                color: Color(0xffffa63b),
-                                margin: EdgeInsets.all(1.0),
-                                padding: const EdgeInsets.only(
-                                    top: 5.0,
-                                    bottom: 5.0,
-                                    right: 10.0,
-                                    left: 10.0),
-                                child: Text(
-                                  "01120051 - SUGITO MARTONO",
-                                  style: TextStyle(
-                                      color: Color(0xffffffff),
-                                      fontFamily: 'CjFont',
-                                      fontSize: 11),
-                                ),
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                width: 170.0,
-                                height: 55.0,
-                                color: Color(0xffffa63b),
-                                margin: EdgeInsets.all(1.0),
-                                padding: const EdgeInsets.only(
-                                    top: 5.0,
-                                    bottom: 5.0,
-                                    right: 10.0,
-                                    left: 10.0),
-                                child: Text(
-                                  "05230002 - RIFKY MUSLIM GHOZALI",
-                                  style: TextStyle(
-                                      color: Color(0xffffffff),
-                                      fontFamily: 'CjFont',
-                                      fontSize: 11),
-                                ),
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                width: 170.0,
-                                height: 55.0,
-                                color: Color(0xffffa63b),
-                                margin: EdgeInsets.all(1.0),
-                                padding: const EdgeInsets.only(
-                                    top: 5.0,
-                                    bottom: 5.0,
-                                    right: 10.0,
-                                    left: 10.0),
-                                child: Text(
-                                  "02210604 - EKO YUDO PRAKOSO",
-                                  style: TextStyle(
-                                      color: Color(0xffffffff),
-                                      fontFamily: 'CjFont',
-                                      fontSize: 11),
-                                ),
-                              ),
-                              Container(
-                                alignment: Alignment.center,
-                                width: 170.0,
-                                height: 55.0,
-                                color: Color(0xffffa63b),
-                                margin: EdgeInsets.all(1.0),
-                                padding: const EdgeInsets.only(
-                                    top: 5.0,
-                                    bottom: 5.0,
-                                    right: 10.0,
-                                    left: 10.0),
-                                child: Text(
-                                  "02150375 - AGUS PRIYONO",
-                                  style: TextStyle(
-                                      color: Color(0xffffffff),
-                                      fontFamily: 'CjFont',
-                                      fontSize: 11),
-                                ),
-                              ),
-                            ]),
+                            ),
+                            rankingName(_stopBOTTOM[0].employeeID),
+                            rankingName(_stopBOTTOM[1].employeeID),
+                            rankingName(_stopBOTTOM[2].employeeID),
+                            rankingName(_stopBOTTOM[3].employeeID),
+                            rankingName(_stopBOTTOM[4].employeeID),
+                          ],
+                        ),
                         Flexible(
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xff006dcd),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "TARGET",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xff006dcd),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "CASH IN",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xff006dcd),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "%",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "809",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "599",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "73.96%",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "4.548",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "3.354",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "73.74%",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "32.387",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "19.542",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "60.34%",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "3.949",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "2.072",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "52.46%",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "12.567",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "6.197",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      width: 120.0,
-                                      height: 55.0,
-                                      color: Color(0xffedecec),
-                                      margin: EdgeInsets.all(1.0),
-                                      child: Text(
-                                        "49.31%",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontFamily: 'CjFont',
-                                            fontSize: 12),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                rankingColl('TARGET', 'CASH IN', '%', true),
+                                rankingColl(
+                                    _stopBOTTOM[0].target,
+                                    _stopBOTTOM[0].cashIn,
+                                    _stopBOTTOM[0].percentage + "%",
+                                    false),
+                                rankingColl(
+                                    _stopBOTTOM[1].target,
+                                    _stopBOTTOM[1].cashIn,
+                                    _stopBOTTOM[1].percentage + "%",
+                                    false),
+                                rankingColl(
+                                    _stopBOTTOM[2].target,
+                                    _stopBOTTOM[2].cashIn,
+                                    _stopBOTTOM[2].percentage + "%",
+                                    false),
+                                rankingColl(
+                                    _stopBOTTOM[3].target,
+                                    _stopBOTTOM[3].cashIn,
+                                    _stopBOTTOM[3].percentage + "%",
+                                    false),
+                                rankingColl(
+                                    _stopBOTTOM[4].target,
+                                    _stopBOTTOM[4].cashIn,
+                                    _stopBOTTOM[4].percentage + "%",
+                                    false),
                               ],
                             ),
                           ),
