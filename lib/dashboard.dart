@@ -79,8 +79,8 @@ class _DashboardState extends State<Dashboard> {
   String? _fullName = '';
   String? _tokenAPI = '';
 
-  String urlAPI = 'http://103.209.6.32:8080/cct-api/api';
-  String urlAPIInternal = 'http://10.137.26.67:8080/cct-api/api';
+  String urlAPIInternal = 'http://103.209.6.32:8080/cct-api/api';
+  String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
   bool _isLoading = false;
 
   DailyRemainder? _dailyRemainder =
