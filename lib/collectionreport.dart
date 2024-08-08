@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class OverdueReport extends StatelessWidget {
+class CollectionReport extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +37,7 @@ class OverdueReport extends StatelessWidget {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("OVERDUE REPORT",
+                        Text("COLELCTION REPORT",
                             textAlign: TextAlign.left,
                             style: TextStyle(
                                 fontSize: 18,

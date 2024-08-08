@@ -265,7 +265,7 @@ class _MenuState extends State<Menu> {
                         child: GestureDetector(
                           onTap: () {
                             Navigator.of(context)
-                                .pushReplacementNamed('/dashboard');
+                                .pushReplacementNamed('/collection-report');
                           },
                           child: Container(
                             margin: EdgeInsets.only(right: 5),
