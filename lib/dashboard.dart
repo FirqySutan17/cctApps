@@ -79,8 +79,9 @@ class _DashboardState extends State<Dashboard> {
   String? _fullName = '';
   String? _tokenAPI = '';
 
-  String urlAPIExternal = 'http://103.209.6.32:8080/cct-api/api';
-  String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
+  String urlAPIInternal = 'http://103.209.6.32:8080/cct-api/api';
+  String urlAPI = 'http://103.209.6.32:8080/cct-api/api';
+  // String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
   bool _isLoading = false;
 
   DailyRemainder? _dailyRemainder =
@@ -132,11 +133,12 @@ class _DashboardState extends State<Dashboard> {
         headers: {'Authorization': 'Bearer $_tokenAPI'},
       );
 
-      print(response.body);
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
         setState(() {
+          print(jsonResponse['data']);
           _dailyRemainder = DailyRemainder.fromJSON(jsonResponse['data']);
+          print(_dailyRemainder);
         });
       }
     } on http.ClientException catch (e) {
@@ -156,7 +158,6 @@ class _DashboardState extends State<Dashboard> {
         headers: {'Authorization': 'Bearer $_tokenAPI'},
       );
 
-      print(response.body);
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
         setState(() {
@@ -182,9 +183,6 @@ class _DashboardState extends State<Dashboard> {
 
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
-        print('RUNNING BOTTOM JSON:' +
-            jsonEncode(jsonResponse["data"]["RUNNING"]["BOTTOM"]));
-        // print('RUNNING BOTTOM:' + jsonEncode(runningBOTTOM));
 
         List<dynamic> runningTOP = jsonResponse["data"]["RUNNING"]["TOP"];
         List<dynamic> runningBOTTOM = jsonResponse["data"]["RUNNING"]["BOTTOM"];
@@ -207,7 +205,6 @@ class _DashboardState extends State<Dashboard> {
               .map((itemJson) => UserRanking.fromJSON(itemJson))
               .toList();
 
-          print(jsonResponse["data"]);
           _isLoading = false;
         });
       }

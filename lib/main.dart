@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cct/collectionreport.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -22,6 +23,7 @@ void main() {
       '/visit-entry': (context) => VisitEntry(),
       '/visit-report': (context) => VisitReport(),
       '/overdue-report': (context) => OverdueReport(),
+      '/collection-report': (context) => CollectionReport(),
     },
   ));
 }
