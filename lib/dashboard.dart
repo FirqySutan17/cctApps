@@ -79,11 +79,7 @@ class _DashboardState extends State<Dashboard> {
   String? _fullName = '';
   String? _tokenAPI = '';
 
-<<<<<<< HEAD
-  String urlAPIInternal = 'http://103.209.6.32:8080/cct-api/api';
-=======
   String urlAPIExternal = 'http://103.209.6.32:8080/cct-api/api';
->>>>>>> a975ce40271b1f095408a6fd0cc81b6b7a542cf0
   String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
   bool _isLoading = false;
 

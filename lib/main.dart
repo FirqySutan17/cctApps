@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'login.dart';
 import 'dashboard.dart';
 import 'menu.dart';
+import 'visitentry.dart';
 import 'visitreport.dart';
 import 'overduereport.dart';
 
@@ -18,6 +19,7 @@ void main() {
       '/login': (context) => Login(),
       '/dashboard': (context) => Dashboard(),
       '/menu': (context) => Menu(),
+      '/visit-entry': (context) => VisitEntry(),
       '/visit-report': (context) => VisitReport(),
       '/overdue-report': (context) => OverdueReport(),
     },
