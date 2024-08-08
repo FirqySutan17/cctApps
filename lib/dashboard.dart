@@ -422,6 +422,13 @@ class _DashboardState extends State<Dashboard> {
                           top: 10.0, bottom: 10.0, right: 5.0, left: 5.0),
                       child: Column(
                         children: [
+                          Text("DAILY REMAINDER",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'Cjfont',
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold)),
+                          SizedBox(height: 5),
                           Text(_dailyRemainder!.title,
                               style: TextStyle(
                                   fontSize: 20,
@@ -571,6 +578,13 @@ class _DashboardState extends State<Dashboard> {
                           top: 10.0, bottom: 10.0, right: 5.0, left: 5.0),
                       child: Column(
                         children: [
+                          Text("DAILY REMAINDER",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'Cjfont',
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold)),
+                          SizedBox(height: 5),
                           Text(_monthlyRemainder!.title,
                               style: TextStyle(
                                   fontSize: 20,
