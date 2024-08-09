@@ -22,9 +22,9 @@ class DailyRemainder {
   factory DailyRemainder.fromJSON(Map<String, dynamic> json) {
     return DailyRemainder(
         title: json['YMD'],
-        collection: json['COLL'],
-        overDue: json['OD'],
-        badDebt: json['BD']);
+        collection: json['COLL'].toString(),
+        overDue: json['OD'].toString(),
+        badDebt: json['BD'].toString());
   }
 }
 
@@ -43,9 +43,9 @@ class MonthlyRemainder {
   factory MonthlyRemainder.fromJSON(Map<String, dynamic> json) {
     return MonthlyRemainder(
         title: json['YYMM'],
-        collection: json['COLL'],
-        overDue: json['OD'],
-        badDebt: json['BD']);
+        collection: json['COLL'].toString(),
+        overDue: json['OD'].toString(),
+        badDebt: json['BD'].toString());
   }
 }
 
@@ -63,10 +63,10 @@ class UserRanking {
 
   factory UserRanking.fromJSON(Map<String, dynamic> json) {
     return UserRanking(
-        employeeID: json['EMPNO'] + ' - ' + json['EMPLOYEE_NAME'],
-        cashIn: json['CASH_IN'],
-        target: json['TARGET'],
-        percentage: json['PERCENTAGE']);
+        employeeID: json['EMPLOYEE_NAME'].toString(),
+        cashIn: json['CASH_IN'].toString(),
+        target: json['TARGET'].toString(),
+        percentage: json['PERCENTAGE'].toString());
   }
 }
 
@@ -83,6 +83,7 @@ class _DashboardState extends State<Dashboard> {
   String urlAPI = 'http://103.209.6.32:8080/cct-api/api';
   // String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
   bool _isLoading = false;
+  bool isIncludeData = false;
 
   DailyRemainder? _dailyRemainder =
       DailyRemainder(title: '', collection: '', overDue: '', badDebt: '');
@@ -113,6 +114,16 @@ class _DashboardState extends State<Dashboard> {
     }
   }
 
+  Future<void> refreshData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    await dailyRemainderLoad();
+    await monthlyRemainderLoad();
+    await monthlyRankingLoad();
+  }
+
   Future<void> getLoginSession() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Ambil nilai dari SharedPreferences
@@ -126,7 +137,10 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Future<void> dailyRemainderLoad() async {
-    String url = urlAPI + '/dashboard/daily-remainder';
+    String url = urlAPI +
+        '/dashboard/daily-remainder?include=' +
+        isIncludeData.toString();
+    print(url);
     try {
       var response = await http.get(
         Uri.parse(url),
@@ -151,7 +165,10 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Future<void> monthlyRemainderLoad() async {
-    String url = urlAPI + '/dashboard/monthly-remainder';
+    String url = urlAPI +
+        '/dashboard/monthly-remainder?include=' +
+        isIncludeData.toString();
+    print(url);
     try {
       var response = await http.get(
         Uri.parse(url),
@@ -174,7 +191,10 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Future<void> monthlyRankingLoad() async {
-    String url = urlAPI + '/dashboard/monthly-ranking';
+    String url = urlAPI +
+        '/dashboard/monthly-ranking?include=' +
+        isIncludeData.toString();
+    print(url);
     try {
       var response = await http.get(
         Uri.parse(url),
@@ -305,6 +325,52 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
+  Widget rankingContainer(
+      String textData, Color backgroundColor, Color textColor) {
+    return Container(
+      alignment: Alignment.center,
+      width: double.infinity,
+      height: 30,
+      color: backgroundColor,
+      margin: EdgeInsets.all(1.0),
+      child: Text(
+        textData,
+        style: TextStyle(
+            color: textColor,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'CjFont',
+            fontSize: 12),
+      ),
+    );
+  }
+
+  Widget rankingColumn(String name, String target, String cashIn,
+      String percentage, bool isHeader) {
+    Color backgroundColor = isHeader ? Color(0xff006dcd) : Color(0xffedecec);
+    Color backgroundColorName =
+        isHeader ? Color(0xff006dcd) : Color(0xffffa63b);
+    Color textColor = isHeader ? Colors.white : Colors.black;
+    return Column(
+      children: [
+        rankingContainer(name, backgroundColorName, Colors.white),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: rankingContainer(target, backgroundColor, textColor),
+            ),
+            Expanded(
+              child: rankingContainer(cashIn, backgroundColor, textColor),
+            ),
+            Expanded(
+              child: rankingContainer(percentage, backgroundColor, textColor),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
   Widget content(BuildContext context) {
     return Container(
       width: double.infinity,
@@ -407,6 +473,26 @@ class _DashboardState extends State<Dashboard> {
                   Container(
                     margin: EdgeInsets.only(top: 10),
                     width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 10.0, bottom: 10.0, right: 5.0, left: 5.0),
+                      child: CheckboxListTile(
+                        title: Text("Incl. Internal"),
+                        value: isIncludeData,
+                        onChanged: (newValue) {
+                          setState(() {
+                            isIncludeData = newValue ?? false;
+                          });
+                          refreshData();
+                        },
+                        controlAffinity: ListTileControlAffinity
+                            .leading, //  <-- leading Checkbox
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 10),
+                    width: double.infinity,
                     // height: 200,
                     decoration: BoxDecoration(
                       color: Color(0xff007dc3),
@@ -422,7 +508,7 @@ class _DashboardState extends State<Dashboard> {
                           top: 10.0, bottom: 10.0, right: 5.0, left: 5.0),
                       child: Column(
                         children: [
-                          Text("DAILY REMAINDER",
+                          Text("DAILY COLLECTION",
                               style: TextStyle(
                                   fontSize: 20,
                                   fontFamily: 'Cjfont',
@@ -578,7 +664,7 @@ class _DashboardState extends State<Dashboard> {
                           top: 10.0, bottom: 10.0, right: 5.0, left: 5.0),
                       child: Column(
                         children: [
-                          Text("DAILY REMAINDER",
+                          Text("MONTHLY COLLECTION",
                               style: TextStyle(
                                   fontSize: 20,
                                   fontFamily: 'Cjfont',
@@ -724,7 +810,13 @@ class _DashboardState extends State<Dashboard> {
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text("RUNNING - JULY 2024",
+                              Text("RUNNING CUSTOMER",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontFamily: 'Cjfont',
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
+                              Text("JULY 2024",
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontFamily: 'Cjfont',
@@ -744,69 +836,44 @@ class _DashboardState extends State<Dashboard> {
                   Container(
                     margin: EdgeInsets.only(top: 15.0),
                     width: double.infinity,
-                    child: Row(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              width: 170.0,
-                              height: 55.0,
-                              color: Color(0xff006dcd),
-                              margin: EdgeInsets.all(1.0),
-                              child: Text(
-                                "NAME",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'CjFont',
-                                    fontSize: 12),
-                              ),
-                            ),
-                            rankingName(_runningTOP[0].employeeID),
-                            rankingName(_runningTOP[1].employeeID),
-                            rankingName(_runningTOP[2].employeeID),
-                            rankingName(_runningTOP[3].employeeID),
-                            rankingName(_runningTOP[4].employeeID),
-                          ],
+                      children: [
+                        rankingColumn('NAME', 'TARGET', 'CASH IN', '%', true),
+                        rankingColumn(
+                          _runningTOP[0].employeeID,
+                          _runningTOP[0].target,
+                          _runningTOP[0].cashIn,
+                          _runningTOP[0].percentage,
+                          false,
                         ),
-                        Flexible(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                rankingColl('TARGET', 'CASH IN', '%', true),
-                                rankingColl(
-                                    _runningTOP[0].target,
-                                    _runningTOP[0].cashIn,
-                                    _runningTOP[0].percentage + "%",
-                                    false),
-                                rankingColl(
-                                    _runningTOP[1].target,
-                                    _runningTOP[1].cashIn,
-                                    _runningTOP[1].percentage + "%",
-                                    false),
-                                rankingColl(
-                                    _runningTOP[2].target,
-                                    _runningTOP[2].cashIn,
-                                    _runningTOP[2].percentage + "%",
-                                    false),
-                                rankingColl(
-                                    _runningTOP[3].target,
-                                    _runningTOP[3].cashIn,
-                                    _runningTOP[3].percentage + "%",
-                                    false),
-                                rankingColl(
-                                    _runningTOP[4].target,
-                                    _runningTOP[4].cashIn,
-                                    _runningTOP[4].percentage + "%",
-                                    false),
-                              ],
-                            ),
-                          ),
+                        rankingColumn(
+                          _runningTOP[1].employeeID,
+                          _runningTOP[1].target,
+                          _runningTOP[1].cashIn,
+                          _runningTOP[1].percentage,
+                          false,
+                        ),
+                        rankingColumn(
+                          _runningTOP[2].employeeID,
+                          _runningTOP[2].target,
+                          _runningTOP[2].cashIn,
+                          _runningTOP[2].percentage,
+                          false,
+                        ),
+                        rankingColumn(
+                          _runningTOP[3].employeeID,
+                          _runningTOP[3].target,
+                          _runningTOP[3].cashIn,
+                          _runningTOP[3].percentage,
+                          false,
+                        ),
+                        rankingColumn(
+                          _runningTOP[4].employeeID,
+                          _runningTOP[4].target,
+                          _runningTOP[4].cashIn,
+                          _runningTOP[4].percentage,
+                          false,
                         ),
                       ],
                     ),
@@ -823,7 +890,13 @@ class _DashboardState extends State<Dashboard> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text("RUNNING - JULY 2024",
+                            Text("RUNNING CUSTOMER",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'Cjfont',
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
+                            Text("JULY 2024",
                                 style: TextStyle(
                                     fontSize: 20,
                                     fontFamily: 'Cjfont',
@@ -844,69 +917,44 @@ class _DashboardState extends State<Dashboard> {
                   Container(
                     margin: EdgeInsets.only(top: 15.0),
                     width: double.infinity,
-                    child: Row(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              width: 170.0,
-                              height: 55.0,
-                              color: Color(0xff006dcd),
-                              margin: EdgeInsets.all(1.0),
-                              child: Text(
-                                "NAME",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'CjFont',
-                                    fontSize: 12),
-                              ),
-                            ),
-                            rankingName(_runningBOTTOM[0].employeeID),
-                            rankingName(_runningBOTTOM[1].employeeID),
-                            rankingName(_runningBOTTOM[2].employeeID),
-                            rankingName(_runningBOTTOM[3].employeeID),
-                            rankingName(_runningBOTTOM[4].employeeID),
-                          ],
+                      children: [
+                        rankingColumn('NAME', 'TARGET', 'CASH IN', '%', true),
+                        rankingColumn(
+                          _runningBOTTOM[0].employeeID,
+                          _runningBOTTOM[0].target,
+                          _runningBOTTOM[0].cashIn,
+                          _runningBOTTOM[0].percentage,
+                          false,
                         ),
-                        Flexible(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                rankingColl('TARGET', 'CASH IN', '%', true),
-                                rankingColl(
-                                    _runningBOTTOM[0].target,
-                                    _runningBOTTOM[0].cashIn,
-                                    _runningBOTTOM[0].percentage + "%",
-                                    false),
-                                rankingColl(
-                                    _runningBOTTOM[1].target,
-                                    _runningBOTTOM[1].cashIn,
-                                    _runningBOTTOM[1].percentage + "%",
-                                    false),
-                                rankingColl(
-                                    _runningBOTTOM[2].target,
-                                    _runningBOTTOM[2].cashIn,
-                                    _runningBOTTOM[2].percentage + "%",
-                                    false),
-                                rankingColl(
-                                    _runningBOTTOM[3].target,
-                                    _runningBOTTOM[3].cashIn,
-                                    _runningBOTTOM[3].percentage + "%",
-                                    false),
-                                rankingColl(
-                                    _runningBOTTOM[4].target,
-                                    _runningBOTTOM[4].cashIn,
-                                    _runningBOTTOM[4].percentage + "%",
-                                    false),
-                              ],
-                            ),
-                          ),
+                        rankingColumn(
+                          _runningBOTTOM[1].employeeID,
+                          _runningBOTTOM[1].target,
+                          _runningBOTTOM[1].cashIn,
+                          _runningBOTTOM[1].percentage,
+                          false,
+                        ),
+                        rankingColumn(
+                          _runningBOTTOM[2].employeeID,
+                          _runningBOTTOM[2].target,
+                          _runningBOTTOM[2].cashIn,
+                          _runningBOTTOM[2].percentage,
+                          false,
+                        ),
+                        rankingColumn(
+                          _runningBOTTOM[3].employeeID,
+                          _runningBOTTOM[3].target,
+                          _runningBOTTOM[3].cashIn,
+                          _runningBOTTOM[3].percentage,
+                          false,
+                        ),
+                        rankingColumn(
+                          _runningBOTTOM[4].employeeID,
+                          _runningBOTTOM[4].target,
+                          _runningBOTTOM[4].cashIn,
+                          _runningBOTTOM[4].percentage,
+                          false,
                         ),
                       ],
                     ),
@@ -923,7 +971,13 @@ class _DashboardState extends State<Dashboard> {
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text("STOP - JULY 2024",
+                              Text("STOP CUSTOMER",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontFamily: 'Cjfont',
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
+                              Text("JULY 2024",
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontFamily: 'Cjfont',
@@ -943,69 +997,44 @@ class _DashboardState extends State<Dashboard> {
                   Container(
                     margin: EdgeInsets.only(top: 15.0),
                     width: double.infinity,
-                    child: Row(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              width: 170.0,
-                              height: 55.0,
-                              color: Color(0xff006dcd),
-                              margin: EdgeInsets.all(1.0),
-                              child: Text(
-                                "NAME",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'CjFont',
-                                    fontSize: 12),
-                              ),
-                            ),
-                            rankingName(_stopTOP[0].employeeID),
-                            rankingName(_stopTOP[1].employeeID),
-                            rankingName(_stopTOP[2].employeeID),
-                            rankingName(_stopTOP[3].employeeID),
-                            rankingName(_stopTOP[4].employeeID),
-                          ],
+                      children: [
+                        rankingColumn('NAME', 'TARGET', 'CASH IN', '%', true),
+                        rankingColumn(
+                          _stopTOP[0].employeeID,
+                          _stopTOP[0].target,
+                          _stopTOP[0].cashIn,
+                          _stopTOP[0].percentage,
+                          false,
                         ),
-                        Flexible(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                rankingColl('TARGET', 'CASH IN', '%', true),
-                                rankingColl(
-                                    _stopTOP[0].target,
-                                    _stopTOP[0].cashIn,
-                                    _stopTOP[0].percentage + "%",
-                                    false),
-                                rankingColl(
-                                    _stopTOP[1].target,
-                                    _stopTOP[1].cashIn,
-                                    _stopTOP[1].percentage + "%",
-                                    false),
-                                rankingColl(
-                                    _stopTOP[2].target,
-                                    _stopTOP[2].cashIn,
-                                    _stopTOP[2].percentage + "%",
-                                    false),
-                                rankingColl(
-                                    _stopTOP[3].target,
-                                    _stopTOP[3].cashIn,
-                                    _stopTOP[3].percentage + "%",
-                                    false),
-                                rankingColl(
-                                    _stopTOP[4].target,
-                                    _stopTOP[4].cashIn,
-                                    _stopTOP[4].percentage + "%",
-                                    false),
-                              ],
-                            ),
-                          ),
+                        rankingColumn(
+                          _stopTOP[1].employeeID,
+                          _stopTOP[1].target,
+                          _stopTOP[1].cashIn,
+                          _stopTOP[1].percentage,
+                          false,
+                        ),
+                        rankingColumn(
+                          _stopTOP[2].employeeID,
+                          _stopTOP[2].target,
+                          _stopTOP[2].cashIn,
+                          _stopTOP[2].percentage,
+                          false,
+                        ),
+                        rankingColumn(
+                          _stopTOP[3].employeeID,
+                          _stopTOP[3].target,
+                          _stopTOP[3].cashIn,
+                          _stopTOP[3].percentage,
+                          false,
+                        ),
+                        rankingColumn(
+                          _stopTOP[4].employeeID,
+                          _stopTOP[4].target,
+                          _stopTOP[4].cashIn,
+                          _stopTOP[4].percentage,
+                          false,
                         ),
                       ],
                     ),
@@ -1022,7 +1051,13 @@ class _DashboardState extends State<Dashboard> {
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text("STOP - JULY 2024",
+                              Text("STOP CUSTOMER",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontFamily: 'Cjfont',
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
+                              Text("JULY 2024",
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontFamily: 'Cjfont',
@@ -1042,69 +1077,44 @@ class _DashboardState extends State<Dashboard> {
                   Container(
                     margin: EdgeInsets.only(top: 15.0),
                     width: double.infinity,
-                    child: Row(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              width: 170.0,
-                              height: 55.0,
-                              color: Color(0xff006dcd),
-                              margin: EdgeInsets.all(1.0),
-                              child: Text(
-                                "NAME",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'CjFont',
-                                    fontSize: 12),
-                              ),
-                            ),
-                            rankingName(_stopBOTTOM[0].employeeID),
-                            rankingName(_stopBOTTOM[1].employeeID),
-                            rankingName(_stopBOTTOM[2].employeeID),
-                            rankingName(_stopBOTTOM[3].employeeID),
-                            rankingName(_stopBOTTOM[4].employeeID),
-                          ],
+                      children: [
+                        rankingColumn('NAME', 'TARGET', 'CASH IN', '%', true),
+                        rankingColumn(
+                          _stopBOTTOM[0].employeeID,
+                          _stopBOTTOM[0].target,
+                          _stopBOTTOM[0].cashIn,
+                          _stopBOTTOM[0].percentage,
+                          false,
                         ),
-                        Flexible(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                rankingColl('TARGET', 'CASH IN', '%', true),
-                                rankingColl(
-                                    _stopBOTTOM[0].target,
-                                    _stopBOTTOM[0].cashIn,
-                                    _stopBOTTOM[0].percentage + "%",
-                                    false),
-                                rankingColl(
-                                    _stopBOTTOM[1].target,
-                                    _stopBOTTOM[1].cashIn,
-                                    _stopBOTTOM[1].percentage + "%",
-                                    false),
-                                rankingColl(
-                                    _stopBOTTOM[2].target,
-                                    _stopBOTTOM[2].cashIn,
-                                    _stopBOTTOM[2].percentage + "%",
-                                    false),
-                                rankingColl(
-                                    _stopBOTTOM[3].target,
-                                    _stopBOTTOM[3].cashIn,
-                                    _stopBOTTOM[3].percentage + "%",
-                                    false),
-                                rankingColl(
-                                    _stopBOTTOM[4].target,
-                                    _stopBOTTOM[4].cashIn,
-                                    _stopBOTTOM[4].percentage + "%",
-                                    false),
-                              ],
-                            ),
-                          ),
+                        rankingColumn(
+                          _stopBOTTOM[1].employeeID,
+                          _stopBOTTOM[1].target,
+                          _stopBOTTOM[1].cashIn,
+                          _stopBOTTOM[1].percentage,
+                          false,
+                        ),
+                        rankingColumn(
+                          _stopBOTTOM[2].employeeID,
+                          _stopBOTTOM[2].target,
+                          _stopBOTTOM[2].cashIn,
+                          _stopBOTTOM[2].percentage,
+                          false,
+                        ),
+                        rankingColumn(
+                          _stopBOTTOM[3].employeeID,
+                          _stopBOTTOM[3].target,
+                          _stopBOTTOM[3].cashIn,
+                          _stopBOTTOM[3].percentage,
+                          false,
+                        ),
+                        rankingColumn(
+                          _stopBOTTOM[4].employeeID,
+                          _stopBOTTOM[4].target,
+                          _stopBOTTOM[4].cashIn,
+                          _stopBOTTOM[4].percentage,
+                          false,
                         ),
                       ],
                     ),
