@@ -80,8 +80,8 @@ class _DashboardState extends State<Dashboard> {
   String? _tokenAPI = '';
 
   String urlAPIInternal = 'http://103.209.6.32:8080/cct-api/api';
-  // String urlAPI = 'http://103.209.6.32:8080/cct-api/api';
-  String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
+  String urlAPI = 'http://103.209.6.32:8080/cct-api/api';
+  // String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
   bool _isLoading = false;
   bool isIncludeData = false;
 
@@ -146,9 +146,10 @@ class _DashboardState extends State<Dashboard> {
         Uri.parse(url),
         headers: {'Authorization': 'Bearer $_tokenAPI'},
       );
-
+      print(response.body);
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
+        print(jsonResponse);
         setState(() {
           print(jsonResponse['data']);
           _dailyRemainder = DailyRemainder.fromJSON(jsonResponse['data']);

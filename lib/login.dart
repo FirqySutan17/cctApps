@@ -38,10 +38,8 @@ class _LoginState extends State<Login> {
         },
       );
 
-      print(response.body);
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
-        print(jsonResponse["data"]["token"]);
         String token =
             jsonResponse["data"]["token"]; // Misalnya API mengembalikan token
 
