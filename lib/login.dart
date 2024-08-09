@@ -20,6 +20,13 @@ class _LoginState extends State<Login> {
   bool passwordVisible = false;
   bool _isLoading = false;
 
+  List<String> site = <String>[
+    'PT. CJ FEED & CARE INDONESIA',
+    'PT. SUPER UNGGAS JAYA',
+  ];
+
+  String? siteValue;
+
   Future<void> loginAction() async {
     setState(() {
       _isLoading = true;
@@ -138,18 +145,21 @@ class _LoginState extends State<Login> {
                 child: Container(
                   child: Center(
                       child: new Image.asset('assets/images/cct-logo.png',
-                          width: 125.0, height: 125.0)),
+                          width: 170.0, height: 170.0)),
                 ),
               ),
             ),
             Container(
-              height: heightForStack,
+              // height: heightForStack,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40.0),
                 child: Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      SizedBox(
+                        height: 30,
+                      ),
                       Text("LOGIN",
                           style: TextStyle(
                               fontSize: 30,
@@ -159,6 +169,40 @@ class _LoginState extends State<Login> {
                           style: TextStyle(fontSize: 12, fontFamily: 'Cjfont')),
                       SizedBox(
                         height: 30,
+                      ),
+                      DropdownButtonFormField<String>(
+                        value: siteValue,
+                        decoration: InputDecoration(
+                          labelText: 'Site',
+                          labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Cjfont',
+                          ),
+                          border: OutlineInputBorder(),
+                        ),
+                        icon: Icon(Icons.keyboard_arrow_down),
+                        hint: Text('Select site'),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            siteValue = newValue;
+                          });
+                        },
+                        validator: (String? value) {
+                          if (value == null) {
+                            return 'Please select an option';
+                          }
+                          return null;
+                        },
+                        items:
+                            site.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                      SizedBox(
+                        height: 20,
                       ),
                       Container(
                         decoration: BoxDecoration(
@@ -213,7 +257,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       SizedBox(
-                        height: 75,
+                        height: 40,
                       ),
                       Container(
                         width: double.infinity,
@@ -259,7 +303,7 @@ class _LoginState extends State<Login> {
               ),
             ),
             SizedBox(
-              height: 75,
+              height: 30,
             ),
             Container(
               height: 100,
