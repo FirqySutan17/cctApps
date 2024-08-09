@@ -29,7 +29,7 @@ class _VisitReportState extends State<VisitReport> {
   List<Visit> listData = [];
 
   String urlAPIInternal = 'http://103.209.6.32:8080/cct-api/api';
-  String urlAPI = 'http://103.209.6.32:8080/cct-api/api';
+  String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
   String? _tokenAPI = '';
   bool _isLoading = false;
 
@@ -365,132 +365,6 @@ class _VisitReportState extends State<VisitReport> {
       body: _isLoading
           ? Center(child: CircularProgressIndicator())
           : content(context),
-    );
-  }
-
-  Widget contentbak(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage('assets/images/bg-blue.jpg'), fit: BoxFit.cover),
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              // margin: EdgeInsets.only(bottom: 20),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    top: 20.0, bottom: 20.0, right: 15.0, left: 15.0),
-                child: Container(
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("VISIT REPORT",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: 'Cjfont',
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold)),
-                        Container(
-                          height: 40,
-                          width: 100,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Color(0xffff9304),
-                          ),
-                          child: TextButton(
-                            // style: TextButton.styleFrom(backgroundColor: Color(0xff007dc3)),
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .pushReplacementNamed('/menu');
-                            },
-                            child: Text(
-                              "MENU",
-                              style: TextStyle(
-                                  color: Color(0xffffffff),
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                      ]),
-                ),
-              ),
-            ),
-            Container(
-              width: double.infinity,
-              // height: 300,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.elliptical(35, 35),
-                  topLeft: Radius.elliptical(35, 35),
-                ),
-              ),
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    width: double.infinity,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color(0xffff9304),
-                    ),
-                    padding: const EdgeInsets.only(
-                        top: 10.0, bottom: 10.0, right: 20.0, left: 20.0),
-                    child: TextButton(
-                      // style: TextButton.styleFrom(backgroundColor: Color(0xff007dc3)),
-                      onPressed: () async {
-                        await formFilterData(context);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("FILTER",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: 'Cjfont',
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold)),
-                          Image.asset('assets/images/icon-filter.png',
-                              width: 27, height: 27)
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  // itemData(listData[1]),
-                  Expanded(
-                    child: ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: listData.length + 1,
-                      itemBuilder: (context, index) {
-                        if (index == listData.length) {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        return itemData(listData[index]);
-                      },
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

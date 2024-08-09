@@ -33,7 +33,7 @@ class _LoginState extends State<Login> {
     });
 
     String urlAPI = 'http://103.209.6.32:8080/cct-api/api/login';
-    // urlAPI = 'http://10.137.26.67:8080/cct-api/api/login';
+    urlAPI = 'http://10.137.26.67:8080/cct-api/api/login';
     try {
       var response = await http.post(
         Uri.parse(urlAPI),

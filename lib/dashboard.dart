@@ -80,8 +80,8 @@ class _DashboardState extends State<Dashboard> {
   String? _tokenAPI = '';
 
   String urlAPIInternal = 'http://103.209.6.32:8080/cct-api/api';
-  String urlAPI = 'http://103.209.6.32:8080/cct-api/api';
-
+  // String urlAPI = 'http://103.209.6.32:8080/cct-api/api';
+  String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
   bool _isLoading = false;
   bool isIncludeData = false;
 
@@ -478,7 +478,14 @@ class _DashboardState extends State<Dashboard> {
                       padding: const EdgeInsets.only(
                           top: 10.0, bottom: 10.0, right: 5.0, left: 5.0),
                       child: CheckboxListTile(
-                        title: Text("Incl. Internal"),
+                        title: Text(
+                          "Incl. Internal",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontFamily: 'Cjfont',
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         value: isIncludeData,
                         onChanged: (newValue) {
                           setState(() {
