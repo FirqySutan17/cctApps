@@ -100,6 +100,7 @@ class _LoginState extends State<Login> {
   void initState() {
     super.initState();
     passwordVisible = true;
+    siteValue = 'PT. CJ FEED & CARE INDONESIA';
   }
 
   @override

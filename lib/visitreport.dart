@@ -157,102 +157,116 @@ class _VisitReportState extends State<VisitReport> {
   }
 
   Widget itemData(Visit visit) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 10,
-        ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    VisitReportDetail(visitingNo: visit.visitingNo),
-              ),
-            );
-          },
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.only(
-                top: 15.0, bottom: 15.0, right: 10.0, left: 10.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.elliptical(10, 10),
-                topLeft: Radius.elliptical(10, 10),
-                bottomRight: Radius.elliptical(10, 10),
-                bottomLeft: Radius.elliptical(10, 10),
-              ),
-              border: Border(
-                top: BorderSide(
-                  color: Color(0xffedecec),
-                  width: 2,
+    return Container(
+      width: double.infinity,
+      // height: 300,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        // borderRadius: BorderRadius.only(
+        //   topRight: Radius.elliptical(35, 35),
+        //   topLeft: Radius.elliptical(35, 35),
+        // ),
+      ),
+
+      child: Column(
+        children: [
+          SizedBox(
+            height: 10,
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      VisitReportDetail(visitingNo: visit.visitingNo),
                 ),
-                left: BorderSide(color: Color(0xffedecec), width: 2),
-                right: BorderSide(color: Color(0xffedecec), width: 2),
-                bottom: BorderSide(color: Color(0xffedecec), width: 2),
+              );
+            },
+            child: Container(
+              margin: const EdgeInsets.only(
+                  top: 0.0, bottom: 5.0, right: 10.0, left: 10.0),
+              width: double.infinity,
+              padding: const EdgeInsets.only(
+                  top: 15.0, bottom: 15.0, right: 15.0, left: 15.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.elliptical(10, 10),
+                  topLeft: Radius.elliptical(10, 10),
+                  bottomRight: Radius.elliptical(10, 10),
+                  bottomLeft: Radius.elliptical(10, 10),
+                ),
+                border: Border(
+                  top: BorderSide(
+                    color: Color(0xffedecec),
+                    width: 2,
+                  ),
+                  left: BorderSide(color: Color(0xffedecec), width: 2),
+                  right: BorderSide(color: Color(0xffedecec), width: 2),
+                  bottom: BorderSide(color: Color(0xffedecec), width: 2),
+                ),
               ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(visit.visitingDate,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 12.5,
-                            fontFamily: 'Cjfont',
-                            color: Colors.black,
-                          )),
-                      Text(visit.visitingNo,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontSize: 16,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(visit.visitingDate,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 12.5,
                               fontFamily: 'Cjfont',
                               color: Colors.black,
-                              fontWeight: FontWeight.bold)),
-                      Text(visit.companyName,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontFamily: 'Cjfont',
-                            color: Colors.black,
-                          )),
-                      Text("${visit.customerCode} -${visit.customerName}",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontFamily: 'Cjfont',
-                            color: Colors.black,
-                          )),
-                      Text(visit.drafterName,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontFamily: 'Cjfont',
-                            color: Colors.black,
-                          )),
-                    ],
+                            )),
+                        Text(visit.visitingNo,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: 'Cjfont',
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold)),
+                        Text(visit.companyName,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontFamily: 'Cjfont',
+                              color: Colors.black,
+                            )),
+                        Text("${visit.customerCode} -${visit.customerName}",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontFamily: 'Cjfont',
+                              color: Colors.black,
+                            )),
+                        Text(visit.drafterName,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontFamily: 'Cjfont',
+                              color: Colors.black,
+                            )),
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  child: Column(
-                    children: [
-                      Image.asset('assets/images/icon-right.png',
-                          width: 27, height: 27)
-                    ],
+                  Container(
+                    child: Column(
+                      children: [
+                        Image.asset('assets/images/icon-right.png',
+                            width: 27, height: 27)
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -281,6 +295,7 @@ class _VisitReportState extends State<VisitReport> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      SizedBox(height: 15),
                       TextFormField(
                         controller: _startDateController,
                         onTap: () async {
@@ -297,9 +312,13 @@ class _VisitReportState extends State<VisitReport> {
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           label: Text('Start Date'),
+                          labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Cjfont',
+                          ),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 15),
                       TextFormField(
                         controller: _endDateController,
                         onTap: () async {
@@ -316,9 +335,13 @@ class _VisitReportState extends State<VisitReport> {
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           label: Text('End Date'),
+                          labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Cjfont',
+                          ),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 15),
                       FutureBuilder<List<Plant>>(
                         future: PlantRepositories().getDataPlant(),
                         builder: (BuildContext context,
@@ -331,6 +354,14 @@ class _VisitReportState extends State<VisitReport> {
                           } else {
                             return DropdownButtonFormField<String>(
                               value: plantValue,
+                              decoration: InputDecoration(
+                                labelText: 'Plant',
+                                labelStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'Cjfont',
+                                ),
+                                border: OutlineInputBorder(),
+                              ),
                               onChanged: (String? newValue) {
                                 setState(() {
                                   plantValue = newValue;
@@ -350,7 +381,14 @@ class _VisitReportState extends State<VisitReport> {
                       ),
                     ],
                   )),
-              title: Text('Filter Data'),
+              title: Text(
+                'FILTER DATA',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'CjFont',
+                    fontSize: 15),
+              ),
               actions: <Widget>[
                 TextButton(
                   onPressed: () async {
@@ -360,7 +398,11 @@ class _VisitReportState extends State<VisitReport> {
                       submitFilter();
                     }
                   },
-                  child: Text('Submit Filter'),
+                  child: Text('SUBMIT',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'CjFont',
+                          fontSize: 14)),
                 ),
               ],
             );
@@ -456,7 +498,7 @@ class _VisitReportState extends State<VisitReport> {
                   SizedBox(height: 10),
                   Container(
                     width: double.infinity,
-                    height: 50,
+                    height: 58,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Color(0xffff9304),
@@ -482,14 +524,14 @@ class _VisitReportState extends State<VisitReport> {
                           ),
                           Image.asset(
                             'assets/images/icon-filter.png',
-                            width: 27,
-                            height: 27,
+                            width: 35,
+                            height: 35,
                           ),
                         ],
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  // SizedBox(height: 5),
                 ],
               ),
             ),
