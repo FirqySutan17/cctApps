@@ -42,7 +42,7 @@ class _LoginState extends State<Login> {
         body: {
           'username': _usernameController.text,
           'password': _passwordController.text,
-          'company': 'FEED',
+          'company': siteValue,
           'apiversion': '0.1'
         },
       );
