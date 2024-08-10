@@ -171,113 +171,132 @@ class _OverdueReportState extends State<OverdueReport> {
   }
 
   Widget itemData(Overdue item) {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: () {},
-          child: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.only(
-                top: 15.0, bottom: 15.0, right: 10.0, left: 10.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.elliptical(10, 10),
-                topLeft: Radius.elliptical(10, 10),
-                bottomRight: Radius.elliptical(10, 10),
-                bottomLeft: Radius.elliptical(10, 10),
-              ),
-              border: Border(
-                top: BorderSide(
-                  color: Color(0xffedecec),
-                  width: 2,
+    return Container(
+      width: double.infinity,
+      // height: 300,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        // borderRadius: BorderRadius.only(
+        //   topRight: Radius.elliptical(35, 35),
+        //   topLeft: Radius.elliptical(35, 35),
+        // ),
+      ),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 10,
+          ),
+          GestureDetector(
+            onTap: () {},
+            child: Container(
+              margin: const EdgeInsets.only(
+                  top: 0.0, bottom: 0.0, right: 10.0, left: 10.0),
+              width: double.infinity,
+              padding: const EdgeInsets.only(
+                  top: 15.0, bottom: 0.0, right: 15.0, left: 15.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.elliptical(10, 10),
+                  topLeft: Radius.elliptical(10, 10),
+                  bottomRight: Radius.elliptical(10, 10),
+                  bottomLeft: Radius.elliptical(10, 10),
                 ),
-                left: BorderSide(color: Color(0xffedecec), width: 2),
-                right: BorderSide(color: Color(0xffedecec), width: 2),
-                bottom: BorderSide(color: Color(0xffedecec), width: 2),
-              ),
-            ),
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(item.date,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 12.5,
-                            fontFamily: 'Cjfont',
-                            color: Colors.black,
-                          )),
-                      Text("[${item.customer}] ${item.customerName}",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'Cjfont',
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold)),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(item.businessArea,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontFamily: 'Cjfont',
-                            color: Colors.black,
-                          )),
-                      Text("GC : ${item.groupCustomerName}",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontFamily: 'Cjfont',
-                            color: Colors.black,
-                          )),
-                      Text("SALES : ${item.salesName}",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontFamily: 'Cjfont',
-                            color: Colors.black,
-                          )),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(item.stopValue == "0" ? "OVERDUE :" : "STOP :",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontFamily: 'Cjfont',
-                            color: Colors.black,
-                          )),
-                      Text(
-                          item.stopValue == "0"
-                              ? item.overdueValue
-                              : item.stopValue,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            fontSize: 26,
-                            fontFamily: 'Cjfont',
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          )),
-                      SizedBox(
-                        height: 8,
-                      ),
-                    ],
+                border: Border(
+                  top: BorderSide(
+                    color: Color(0xffedecec),
+                    width: 2,
                   ),
+                  left: BorderSide(color: Color(0xffedecec), width: 2),
+                  right: BorderSide(color: Color(0xffedecec), width: 2),
+                  bottom: BorderSide(color: Color(0xffedecec), width: 2),
                 ),
-              ],
+              ),
+              child: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(item.date,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 12.5,
+                                fontFamily: 'Cjfont',
+                                color: Colors.black,
+                              )),
+                          Text("[${item.customer}] ${item.customerName}",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'Cjfont',
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(item.businessArea,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontFamily: 'Cjfont',
+                                color: Colors.black,
+                              )),
+                          Text("GC : ${item.groupCustomerName}",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontFamily: 'Cjfont',
+                                color: Colors.black,
+                              )),
+                          Text("SALES : ${item.salesName}",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontFamily: 'Cjfont',
+                                color: Colors.black,
+                              )),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(item.stopValue == "0" ? "OVERDUE :" : "STOP :",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontFamily: 'Cjfont',
+                                color: Colors.black,
+                              )),
+                          Text(
+                              item.stopValue == "0"
+                                  ? item.overdueValue
+                                  : item.stopValue,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 26,
+                                fontFamily: 'Cjfont',
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              )),
+                          SizedBox(
+                            height: 8,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-      ],
+          SizedBox(
+            height: 10,
+          ),
+        ],
+      ),
     );
   }
 
@@ -306,6 +325,7 @@ class _OverdueReportState extends State<OverdueReport> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      SizedBox(height: 15),
                       TextFormField(
                         controller: _dateController,
                         onTap: () async {
@@ -322,9 +342,13 @@ class _OverdueReportState extends State<OverdueReport> {
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           label: Text('Start Date'),
+                          labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Cjfont',
+                          ),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 15),
                       FutureBuilder<List<Plant>>(
                         future: PlantRepositories().getDataPlant(),
                         builder: (BuildContext context,
@@ -337,6 +361,15 @@ class _OverdueReportState extends State<OverdueReport> {
                           } else {
                             return DropdownButtonFormField<String>(
                               value: plantValue,
+                              decoration: InputDecoration(
+                                labelText: 'Plant',
+                                labelStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'Cjfont',
+                                ),
+                                border: OutlineInputBorder(),
+                              ),
+                              icon: Icon(Icons.keyboard_arrow_down),
                               onChanged: (String? newValue) {
                                 setState(() {
                                   plantValue = newValue;
@@ -356,7 +389,14 @@ class _OverdueReportState extends State<OverdueReport> {
                       ),
                     ],
                   )),
-              title: Text('Filter Data'),
+              title: Text(
+                'FILTER DATA',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'CjFont',
+                    fontSize: 15),
+              ),
               actions: <Widget>[
                 TextButton(
                   onPressed: () async {
@@ -366,7 +406,11 @@ class _OverdueReportState extends State<OverdueReport> {
                       submitFilter();
                     }
                   },
-                  child: Text('Submit Filter'),
+                  child: Text('SUBMIT',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'CjFont',
+                          fontSize: 14)),
                 ),
               ],
             );
@@ -446,7 +490,7 @@ class _OverdueReportState extends State<OverdueReport> {
                   SizedBox(height: 10),
                   Container(
                     width: double.infinity,
-                    height: 50,
+                    height: 58,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Color(0xffff9304),
@@ -472,14 +516,14 @@ class _OverdueReportState extends State<OverdueReport> {
                           ),
                           Image.asset(
                             'assets/images/icon-filter.png',
-                            width: 27,
-                            height: 27,
+                            width: 35,
+                            height: 35,
                           ),
                         ],
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 5),
                 ],
               ),
             ),
