@@ -45,7 +45,7 @@ class _CollectionReportState extends State<CollectionReport> {
     setState(() {
       plantValue = '*';
       _isLoading = true;
-      _dateController.text = '2024-07-01';
+      _dateController.text = '2024-07-31';
     });
 
     await getLoginSession();
@@ -54,7 +54,7 @@ class _CollectionReportState extends State<CollectionReport> {
       setState(() {
         urlAPI = validAPI;
       });
-      _fetchData();
+      _fetchData(true);
     }
   }
 
@@ -68,7 +68,7 @@ class _CollectionReportState extends State<CollectionReport> {
     });
   }
 
-  Future<void> _fetchData() async {
+  Future<void> _fetchData(bool isFirstTime) async {
     String url = urlAPI + '/report/collector';
     try {
       var response = await http.post(
@@ -77,14 +77,13 @@ class _CollectionReportState extends State<CollectionReport> {
         body: {
           'date': _dateController.text,
           'plant': plantValue,
-          'pagination': _currentPage.toString()
+          'pagination': _currentPage.toString(),
+          'first_time': isFirstTime.toString(),
         },
       );
-      print('date : ' + _dateController.text.toString());
-      print('plant : ' + plantValue.toString());
-      print('current page : ' + _currentPage.toString());
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+        print(jsonResponse);
         setState(() {
           if (!jsonResponse.containsKey('data')) {
             hasMore = false;
@@ -110,6 +109,10 @@ class _CollectionReportState extends State<CollectionReport> {
               List<Collection> newList = responseData
                   .map((itemJson) => Collection.fromJSON(itemJson))
                   .toList();
+              if (isFirstTime) {
+                _dateController.text = newList[0].collectionDate;
+                print(_dateController);
+              }
               print('new list length' + newList.length.toString());
               listData.addAll(newList);
               if (newList.length < 10) {
@@ -137,20 +140,13 @@ class _CollectionReportState extends State<CollectionReport> {
       hasMore = true;
       listData = [];
     });
-    _fetchData();
+    _fetchData(false);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
-  }
-
-  void _loadMore() {
-    setState(() {
-      _currentPage++;
-    });
-    _fetchData();
   }
 
   Widget itemData(Collection collection) {
@@ -855,7 +851,7 @@ class _CollectionReportState extends State<CollectionReport> {
               (context, index) {
                 if (index == listData.length) {
                   if (hasMore) {
-                    _fetchData();
+                    _fetchData(false);
                     return Center(child: CircularProgressIndicator());
                   } else {
                     return SizedBox.shrink();

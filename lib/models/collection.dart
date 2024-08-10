@@ -11,21 +11,22 @@ class Collection {
   final String totalTarget;
   final String totalcashIn;
   final String totalPercentage;
+  final String collectionDate;
 
-  Collection({
-    required this.employeeID,
-    required this.employeeName,
-    required this.companyName,
-    required this.runningTarget,
-    required this.runningcashIn,
-    required this.runningPercentage,
-    required this.stopTarget,
-    required this.stopcashIn,
-    required this.stopPercentage,
-    required this.totalTarget,
-    required this.totalcashIn,
-    required this.totalPercentage,
-  });
+  Collection(
+      {required this.employeeID,
+      required this.employeeName,
+      required this.companyName,
+      required this.runningTarget,
+      required this.runningcashIn,
+      required this.runningPercentage,
+      required this.stopTarget,
+      required this.stopcashIn,
+      required this.stopPercentage,
+      required this.totalTarget,
+      required this.totalcashIn,
+      required this.totalPercentage,
+      required this.collectionDate});
 
   factory Collection.fromJSON(Map<String, dynamic> json) {
     return Collection(
@@ -41,6 +42,7 @@ class Collection {
       totalTarget: json['TOTAL_TARGET'].toString(),
       totalcashIn: json['TOTAL_CASH_IN'].toString(),
       totalPercentage: json['TOTAL_PERCENTAGE'].toString(),
+      collectionDate: json['COLLECTION_DATE'].toString() + '01',
     );
   }
 }

@@ -23,7 +23,7 @@ class _LoginState extends State<Login> {
 
   List<String> site = <String>[
     'PT. CJ FEED & CARE INDONESIA',
-    'PT. SUPER UNGGAS JAYA',
+    // 'PT. SUPER UNGGAS JAYA',
   ];
 
   String? siteValue;
@@ -37,7 +37,8 @@ class _LoginState extends State<Login> {
     String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
     try {
       String validAPI = await Apirepositories().checkAPIUrl();
-      urlAPI = validAPI + '/login';
+      urlAPI = validAPI;
+      urlAPI = urlAPI + '/login';
       var response = await http.post(
         Uri.parse(urlAPI),
         body: {
@@ -123,7 +124,6 @@ class _LoginState extends State<Login> {
   }
 
   Widget content() {
-    double heightForStack = (MediaQuery.of(context).size.height - 350);
     return Container(
       child: SingleChildScrollView(
         child: Column(

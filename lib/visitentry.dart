@@ -15,8 +15,6 @@ class VisitEntry extends StatefulWidget {
 
 class VisitEntryState extends State<VisitEntry> {
   int _activeCurrentStep = 0;
-  final CurrencyTextInputFormatter _formatter =
-      CurrencyTextInputFormatter.currency();
 
   TextEditingController region =
       TextEditingController(text: 'Kalimantan Selatan');

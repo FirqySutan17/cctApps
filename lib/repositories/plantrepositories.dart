@@ -1,5 +1,4 @@
 import 'package:cct/models/plant.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class PlantRepositories {
   Future<List<Plant>> getDataPlant() async {

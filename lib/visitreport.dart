@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cct/models/visit.dart';
 import 'package:cct/repositories/apirepositories.dart';
 import 'package:cct/repositories/plantrepositories.dart';
+import 'package:cct/visitreportdetail.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cct/models/plant.dart';
@@ -162,7 +163,15 @@ class _VisitReportState extends State<VisitReport> {
           height: 10,
         ),
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    VisitReportDetail(visitingNo: visit.visitingNo),
+              ),
+            );
+          },
           child: Container(
             width: double.infinity,
             padding: const EdgeInsets.only(

@@ -25,4 +25,26 @@ class Apirepositories {
 
     return validURL;
   }
+
+  Future<String> checkWebViewUrl() async {
+    String validURL = '';
+    try {
+      print(checkUrl);
+      var response = await http.get(Uri.parse(checkUrl));
+      print(response.body);
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body);
+        print(jsonResponse);
+        validURL = jsonResponse['URL'].toString() + '/cct';
+      }
+    } on http.ClientException catch (e) {
+      // Handle socket exception - connection timeout
+      print('SocketException: ${e.message}');
+      print('URL:\n${e.uri}');
+    } catch (e) {
+      print('Error: $e');
+    }
+
+    return validURL;
+  }
 }
