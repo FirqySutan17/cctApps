@@ -393,6 +393,30 @@ class _MenuState extends State<Menu> {
                     ),
                   ),
                   SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color.fromARGB(255, 195, 29, 0),
+                    ),
+                    child: TextButton(
+                      // style: TextButton.styleFrom(backgroundColor: Color(0xff007dc3)),
+                      onPressed: () {
+                        Navigator.of(context).pushReplacementNamed('/login');
+                      },
+                      child: Text("LOGOUT",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Cjfont',
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                  SizedBox(
                     height: 16.8,
                   ),
                   Container(

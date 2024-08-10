@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cct/repositories/apirepositories.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/src/widgets/container.dart';
@@ -33,8 +34,9 @@ class _LoginState extends State<Login> {
     });
 
     String urlAPI = 'http://103.209.6.32:8080/cct-api/api/login';
-    urlAPI = 'http://10.137.26.67:8080/cct-api/api/login';
     try {
+      String validAPI = await Apirepositories().checkAPIUrl();
+      urlAPI = validAPI + '/cct-api/api/login';
       var response = await http.post(
         Uri.parse(urlAPI),
         body: {
