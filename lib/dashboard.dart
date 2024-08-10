@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:cct/repositories/apirepositories.dart';
 
 class DailyRemainder {
   final String title;
@@ -79,9 +78,7 @@ class _DashboardState extends State<Dashboard> {
   String? _fullName = '';
   String? _tokenAPI = '';
 
-  String urlAPIInternal = 'http://103.209.6.32:8080/cct-api/api';
-  String urlAPI = 'http://103.209.6.32:8080/cct-api/api';
-  // String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
+  String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
   bool _isLoading = false;
   bool isIncludeData = false;
 
@@ -108,6 +105,11 @@ class _DashboardState extends State<Dashboard> {
 
     await getLoginSession();
     if (_tokenAPI != null) {
+      String validAPI = await Apirepositories().checkAPIUrl();
+      setState(() {
+        urlAPI = validAPI + '/cct-api/api';
+        print('NEW API URL : ' + urlAPI);
+      });
       await dailyRemainderLoad();
       await monthlyRemainderLoad();
       await monthlyRankingLoad();
@@ -146,6 +148,7 @@ class _DashboardState extends State<Dashboard> {
         Uri.parse(url),
         headers: {'Authorization': 'Bearer $_tokenAPI'},
       );
+      print('');
       print(response.body);
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
@@ -481,7 +484,7 @@ class _DashboardState extends State<Dashboard> {
                         title: Text(
                           "Incl. Internal",
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 18,
                             fontFamily: 'Cjfont',
                             fontWeight: FontWeight.bold,
                           ),
