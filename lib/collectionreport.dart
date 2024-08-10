@@ -29,8 +29,8 @@ class _CollectionReportState extends State<CollectionReport> {
   int _currentPage = 1;
   List<Collection> listData = [];
 
-  String urlAPIInternal = 'http://103.209.6.32:8080/cct-api/api';
   String urlAPI = 'http://103.209.6.32:8080/cct-api/api';
+  // String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
   String? _tokenAPI = '';
   bool _isLoading = false;
 
@@ -159,8 +159,7 @@ class _CollectionReportState extends State<CollectionReport> {
         //   topLeft: Radius.elliptical(35, 35),
         // ),
       ),
-      padding: const EdgeInsets.only(
-          top: 15.0, bottom: 0.0, right: 10.0, left: 10.0),
+
       child: Column(
         children: [
           SizedBox(
@@ -169,6 +168,8 @@ class _CollectionReportState extends State<CollectionReport> {
           GestureDetector(
             onTap: () {},
             child: Container(
+              margin: const EdgeInsets.only(
+                  top: 0.0, bottom: 10.0, right: 10.0, left: 10.0),
               width: double.infinity,
               padding: const EdgeInsets.only(
                   top: 15.0, bottom: 15.0, right: 10.0, left: 10.0),
@@ -190,50 +191,408 @@ class _CollectionReportState extends State<CollectionReport> {
                   bottom: BorderSide(color: Color(0xffedecec), width: 2),
                 ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              child: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                        collection.employeeID + ' - ' + collection.employeeName,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Cjfont',
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold)),
+                    Text(collection.companyName,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: 'Cjfont',
+                            color: Colors.black)),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text("TOTAL :",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: 'Cjfont',
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold)),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                            collection.employeeID +
-                                ' - ' +
-                                collection.employeeName,
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: 'Cjfont',
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold)),
-                        Text(collection.companyName,
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                fontSize: 13,
-                                fontFamily: 'Cjfont',
-                                color: Colors.black)),
-                        SizedBox(
-                          height: 10,
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 30,
+                            color: Color(0xff006dcd),
+                            margin: EdgeInsets.all(1.0),
+                            child: Text(
+                              'TARGET',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'CjFont',
+                                  fontSize: 12),
+                            ),
+                          ),
                         ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text("TOTAL",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontFamily: 'Cjfont',
-                                  color: Colors.black,
-                                )),
-                          ],
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 30,
+                            color: Color(0xff006dcd),
+                            margin: EdgeInsets.all(1.0),
+                            child: Text(
+                              'CASH IN',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'CjFont',
+                                  fontSize: 12),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 30,
+                            color: Color(0xff006dcd),
+                            margin: EdgeInsets.all(1.0),
+                            child: Text(
+                              '%',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'CjFont',
+                                  fontSize: 12),
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                ],
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 30,
+                            color: Color(0xffedecec),
+                            margin: EdgeInsets.all(1.0),
+                            child: Text(
+                              collection.totalTarget,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'CjFont',
+                                  fontSize: 12),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 30,
+                            color: Color(0xffedecec),
+                            margin: EdgeInsets.all(1.0),
+                            child: Text(
+                              collection.totalcashIn,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'CjFont',
+                                  fontSize: 12),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 30,
+                            color: Color(0xffedecec),
+                            margin: EdgeInsets.all(1.0),
+                            child: Text(
+                              collection.totalPercentage + '%',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'CjFont',
+                                  fontSize: 12),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text("RUNNING :",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: 'Cjfont',
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold)),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 30,
+                            color: Color(0xff006dcd),
+                            margin: EdgeInsets.all(1.0),
+                            child: Text(
+                              'TARGET',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'CjFont',
+                                  fontSize: 12),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 30,
+                            color: Color(0xff006dcd),
+                            margin: EdgeInsets.all(1.0),
+                            child: Text(
+                              'CASH IN',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'CjFont',
+                                  fontSize: 12),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 30,
+                            color: Color(0xff006dcd),
+                            margin: EdgeInsets.all(1.0),
+                            child: Text(
+                              '%',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'CjFont',
+                                  fontSize: 12),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 30,
+                            color: Color(0xffedecec),
+                            margin: EdgeInsets.all(1.0),
+                            child: Text(
+                              collection.runningTarget,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'CjFont',
+                                  fontSize: 12),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 30,
+                            color: Color(0xffedecec),
+                            margin: EdgeInsets.all(1.0),
+                            child: Text(
+                              collection.runningcashIn,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'CjFont',
+                                  fontSize: 12),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 30,
+                            color: Color(0xffedecec),
+                            margin: EdgeInsets.all(1.0),
+                            child: Text(
+                              collection.runningPercentage + '%',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'CjFont',
+                                  fontSize: 12),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text("STOP :",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontFamily: 'Cjfont',
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold)),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 30,
+                            color: Color(0xff006dcd),
+                            margin: EdgeInsets.all(1.0),
+                            child: Text(
+                              'TARGET',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'CjFont',
+                                  fontSize: 12),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 30,
+                            color: Color(0xff006dcd),
+                            margin: EdgeInsets.all(1.0),
+                            child: Text(
+                              'CASH IN',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'CjFont',
+                                  fontSize: 12),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 30,
+                            color: Color(0xff006dcd),
+                            margin: EdgeInsets.all(1.0),
+                            child: Text(
+                              '%',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'CjFont',
+                                  fontSize: 12),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 30,
+                            color: Color(0xffedecec),
+                            margin: EdgeInsets.all(1.0),
+                            child: Text(
+                              collection.stopTarget,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'CjFont',
+                                  fontSize: 12),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 30,
+                            color: Color(0xffedecec),
+                            margin: EdgeInsets.all(1.0),
+                            child: Text(
+                              collection.stopcashIn,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'CjFont',
+                                  fontSize: 12),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 30,
+                            color: Color(0xffedecec),
+                            margin: EdgeInsets.all(1.0),
+                            child: Text(
+                              collection.stopPercentage + '%',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'CjFont',
+                                  fontSize: 12),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -267,6 +626,7 @@ class _CollectionReportState extends State<CollectionReport> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      SizedBox(height: 15),
                       TextFormField(
                         controller: _dateController,
                         onTap: () async {
@@ -283,9 +643,13 @@ class _CollectionReportState extends State<CollectionReport> {
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           label: Text('Date'),
+                          labelStyle: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Cjfont',
+                          ),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 15),
                       FutureBuilder<List<Plant>>(
                         future: PlantRepositories().getDataPlant(),
                         builder: (BuildContext context,
@@ -326,7 +690,14 @@ class _CollectionReportState extends State<CollectionReport> {
                       ),
                     ],
                   )),
-              title: Text('Filter Data'),
+              title: Text(
+                'FILTER DATA',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'CjFont',
+                    fontSize: 15),
+              ),
               actions: <Widget>[
                 TextButton(
                   onPressed: () async {
@@ -336,7 +707,11 @@ class _CollectionReportState extends State<CollectionReport> {
                       submitFilter();
                     }
                   },
-                  child: Text('Submit Filter'),
+                  child: Text('SUBMIT',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'CjFont',
+                          fontSize: 14)),
                 ),
               ],
             );
@@ -465,7 +840,7 @@ class _CollectionReportState extends State<CollectionReport> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 5),
                 ],
               ),
             ),
