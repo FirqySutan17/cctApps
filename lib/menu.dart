@@ -152,8 +152,7 @@ class _MenuState extends State<Menu> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.of(context)
-                                .pushReplacementNamed('/visit-entry');
+                            Navigator.of(context).pushNamed('/visit-entry');
                           },
                           child: Container(
                             margin: EdgeInsets.only(right: 5),
@@ -204,8 +203,7 @@ class _MenuState extends State<Menu> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.of(context)
-                                .pushReplacementNamed('/visit-report');
+                            Navigator.of(context).pushNamed('/visit-report');
                           },
                           child: Container(
                             margin: EdgeInsets.only(left: 5),
@@ -265,7 +263,7 @@ class _MenuState extends State<Menu> {
                         child: GestureDetector(
                           onTap: () {
                             Navigator.of(context)
-                                .pushReplacementNamed('/collection-report');
+                                .pushNamed('/collection-report');
                           },
                           child: Container(
                             margin: EdgeInsets.only(right: 5),
@@ -316,8 +314,7 @@ class _MenuState extends State<Menu> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.of(context)
-                                .pushReplacementNamed('/overdue-report');
+                            Navigator.of(context).pushNamed('/overdue-report');
                           },
                           child: Container(
                             margin: EdgeInsets.only(left: 5),

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cct/models/plant.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,7 +23,8 @@ class _VisitReportState extends State<VisitReport> {
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
 
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedStartDate = DateTime.now();
+  DateTime selectedEndDate = DateTime.now();
   String? plantValue;
 
   final _scrollController = ScrollController();
@@ -30,7 +32,6 @@ class _VisitReportState extends State<VisitReport> {
   int _currentPage = 1;
   List<Visit> listData = [];
 
-  // String urlAPI = 'http://103.209.6.32:8080/cct-api/api';
   String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
   String? _tokenAPI = '';
   bool _isLoading = false;
@@ -43,10 +44,14 @@ class _VisitReportState extends State<VisitReport> {
 
   Future<void> _initProcess() async {
     setState(() {
+      selectedStartDate =
+          DateTime(selectedEndDate.year, selectedEndDate.month, 1);
       plantValue = '*';
       _isLoading = true;
-      _startDateController.text = '2024-07-01';
-      _endDateController.text = '2024-08-06';
+      _startDateController.text =
+          DateFormat('yyyy-MM-dd').format(selectedStartDate);
+      _endDateController.text =
+          DateFormat('yyyy-MM-dd').format(selectedEndDate);
     });
 
     await getLoginSession();
@@ -147,13 +152,6 @@ class _VisitReportState extends State<VisitReport> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
-  }
-
-  void _loadMore() {
-    setState(() {
-      _currentPage++;
-    });
-    _fetchData();
   }
 
   Widget itemData(Visit visit) {
@@ -273,12 +271,25 @@ class _VisitReportState extends State<VisitReport> {
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: selectedDate,
+        initialDate: selectedStartDate,
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate) {
+    if (picked != null && picked != selectedStartDate) {
       setState(() {
-        selectedDate = picked;
+        selectedStartDate = picked;
+      });
+    }
+  }
+
+  Future<void> _selectEndDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedEndDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedEndDate) {
+      setState(() {
+        selectedEndDate = picked;
       });
     }
   }
@@ -305,7 +316,7 @@ class _VisitReportState extends State<VisitReport> {
                           // Show Date Picker Here
                           await _selectDate(context);
                           List splited_date =
-                              selectedDate.toString().split(" ");
+                              selectedStartDate.toString().split(" ");
                           String startDate = splited_date[0];
                           _startDateController.text = startDate;
                         },
@@ -326,9 +337,9 @@ class _VisitReportState extends State<VisitReport> {
                           FocusScope.of(context).requestFocus(new FocusNode());
 
                           // Show Date Picker Here
-                          await _selectDate(context);
+                          await _selectEndDate(context);
                           List splited_date =
-                              selectedDate.toString().split(" ");
+                              selectedEndDate.toString().split(" ");
                           String startDate = splited_date[0];
                           _endDateController.text = startDate;
                         },

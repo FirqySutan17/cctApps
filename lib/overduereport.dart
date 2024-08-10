@@ -59,7 +59,7 @@ class _OverdueReportState extends State<OverdueReport> {
       setState(() {
         urlAPI = validAPI;
       });
-      _fetchData();
+      _fetchData(true);
     }
   }
 
@@ -73,7 +73,7 @@ class _OverdueReportState extends State<OverdueReport> {
     });
   }
 
-  Future<void> _fetchData() async {
+  Future<void> _fetchData(bool isFirstTime) async {
     String url = urlAPI + '/report/overdue';
     try {
       var response = await http.post(
@@ -83,11 +83,10 @@ class _OverdueReportState extends State<OverdueReport> {
           'date': _dateController.text,
           'type': '*',
           'plant': plantValue,
-          'pagination': _currentPage.toString()
+          'pagination': _currentPage.toString(),
+          'first_time': isFirstTime.toString()
         },
       );
-      print('start date : ' + _dateController.text.toString());
-      print('plant : ' + plantValue.toString());
       print('current page : ' + _currentPage.toString());
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = jsonDecode(response.body);
@@ -116,6 +115,8 @@ class _OverdueReportState extends State<OverdueReport> {
               List<Overdue> newList = responseData
                   .map((itemJson) => Overdue.fromJSON(itemJson))
                   .toList();
+
+              _dateController.text = newList[0].date;
               print('new list length' + newList.length.toString());
               listData.addAll(newList);
               if (newList.length < 10) {
@@ -143,7 +144,7 @@ class _OverdueReportState extends State<OverdueReport> {
       hasMore = true;
       listData = [];
     });
-    _fetchData();
+    _fetchData(false);
   }
 
   @override
@@ -156,7 +157,7 @@ class _OverdueReportState extends State<OverdueReport> {
     setState(() {
       _currentPage++;
     });
-    _fetchData();
+    _fetchData(false);
   }
 
   @override
@@ -341,7 +342,7 @@ class _OverdueReportState extends State<OverdueReport> {
                         },
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          label: Text('Start Date'),
+                          label: Text('Date'),
                           labelStyle: TextStyle(
                             color: Colors.black,
                             fontFamily: 'Cjfont',
@@ -350,7 +351,7 @@ class _OverdueReportState extends State<OverdueReport> {
                       ),
                       SizedBox(height: 15),
                       FutureBuilder<List<Plant>>(
-                        future: PlantRepositories().getDataPlant(),
+                        future: PlantRepositories().getDataPlantOverdue(),
                         builder: (BuildContext context,
                             AsyncSnapshot<List<Plant>> snapshot) {
                           if (snapshot.connectionState ==
@@ -533,7 +534,7 @@ class _OverdueReportState extends State<OverdueReport> {
               (context, index) {
                 if (index == listData.length) {
                   if (hasMore) {
-                    _fetchData();
+                    _fetchData(false);
                     return Center(child: CircularProgressIndicator());
                   } else {
                     return SizedBox.shrink();

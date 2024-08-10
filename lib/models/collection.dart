@@ -42,7 +42,7 @@ class Collection {
       totalTarget: json['TOTAL_TARGET'].toString(),
       totalcashIn: json['TOTAL_CASH_IN'].toString(),
       totalPercentage: json['TOTAL_PERCENTAGE'].toString(),
-      collectionDate: json['COLLECTION_DATE'].toString() + '01',
+      collectionDate: json['COLLECTION_DATE'].toString(),
     );
   }
 }
