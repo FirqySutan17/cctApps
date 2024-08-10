@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:cct/repositories/plantrepositories.dart';
 
+import 'repositories/apirepositories.dart';
+
 class OverdueReport extends StatefulWidget {
   @override
   State<OverdueReport> createState() => _OverdueReportState();
@@ -53,6 +55,10 @@ class _OverdueReportState extends State<OverdueReport> {
 
     await getLoginSession();
     if (_tokenAPI != null) {
+      String validAPI = await Apirepositories().checkAPIUrl();
+      setState(() {
+        urlAPI = validAPI;
+      });
       _fetchData();
     }
   }

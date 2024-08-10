@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cct/models/collection.dart';
+import 'package:cct/repositories/apirepositories.dart';
 import 'package:cct/repositories/plantrepositories.dart';
 import 'package:flutter/material.dart';
 
@@ -49,6 +50,10 @@ class _CollectionReportState extends State<CollectionReport> {
 
     await getLoginSession();
     if (_tokenAPI != null) {
+      String validAPI = await Apirepositories().checkAPIUrl();
+      setState(() {
+        urlAPI = validAPI;
+      });
       _fetchData();
     }
   }

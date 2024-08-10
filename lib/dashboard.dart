@@ -107,8 +107,7 @@ class _DashboardState extends State<Dashboard> {
     if (_tokenAPI != null) {
       String validAPI = await Apirepositories().checkAPIUrl();
       setState(() {
-        urlAPI = validAPI + '/cct-api/api';
-        print('NEW API URL : ' + urlAPI);
+        urlAPI = validAPI;
       });
       await dailyRemainderLoad();
       await monthlyRemainderLoad();
@@ -142,21 +141,15 @@ class _DashboardState extends State<Dashboard> {
     String url = urlAPI +
         '/dashboard/daily-remainder?include=' +
         isIncludeData.toString();
-    print(url);
     try {
       var response = await http.get(
         Uri.parse(url),
         headers: {'Authorization': 'Bearer $_tokenAPI'},
       );
-      print('');
-      print(response.body);
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
-        print(jsonResponse);
         setState(() {
-          print(jsonResponse['data']);
           _dailyRemainder = DailyRemainder.fromJSON(jsonResponse['data']);
-          print(_dailyRemainder);
         });
       }
     } on http.ClientException catch (e) {
@@ -172,7 +165,6 @@ class _DashboardState extends State<Dashboard> {
     String url = urlAPI +
         '/dashboard/monthly-remainder?include=' +
         isIncludeData.toString();
-    print(url);
     try {
       var response = await http.get(
         Uri.parse(url),
@@ -198,7 +190,6 @@ class _DashboardState extends State<Dashboard> {
     String url = urlAPI +
         '/dashboard/monthly-ranking?include=' +
         isIncludeData.toString();
-    print(url);
     try {
       var response = await http.get(
         Uri.parse(url),

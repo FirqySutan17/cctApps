@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
-
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -16,7 +13,7 @@ class Apirepositories {
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
         print(jsonResponse);
-        validURL = jsonResponse['URL'];
+        validURL = jsonResponse['URL'].toString() + '/cct-api/api';
       }
     } on http.ClientException catch (e) {
       // Handle socket exception - connection timeout

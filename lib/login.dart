@@ -37,7 +37,7 @@ class _LoginState extends State<Login> {
     String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
     try {
       String validAPI = await Apirepositories().checkAPIUrl();
-      urlAPI = validAPI + '/cct-api/api/login';
+      urlAPI = validAPI + '/login';
       var response = await http.post(
         Uri.parse(urlAPI),
         body: {
@@ -52,7 +52,7 @@ class _LoginState extends State<Login> {
         var jsonResponse = jsonDecode(response.body);
         String token =
             jsonResponse["data"]["token"]; // Misalnya API mengembalikan token
-
+        print(token);
         // Simpan token atau status login di SharedPreferences
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', token);
