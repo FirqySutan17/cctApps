@@ -13,7 +13,6 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  String? _fullName = '';
   TextEditingController name =
       TextEditingController(text: 'Firqy Sutanwaliyah Ikhsan');
   TextEditingController npk = TextEditingController(text: '01220023');
@@ -30,10 +29,16 @@ class _ProfileState extends State<Profile> {
   Future<void> getLoginSession() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Ambil nilai dari SharedPreferences
-    String? fullName = prefs.getString('full_name');
+    String? sessName = prefs.getString('full_name');
+    String? sessEmpID = prefs.getString('employee_id');
+    String? sessEmail = prefs.getString('email');
+    String? sessCompName = prefs.getString('company_name');
     // Update state dengan nilai yang diambil
     setState(() {
-      _fullName = fullName;
+      name.text = sessName.toString();
+      email.text = sessEmail.toString();
+      npk.text = sessEmpID.toString();
+      dept.text = sessCompName.toString();
     });
   }
 

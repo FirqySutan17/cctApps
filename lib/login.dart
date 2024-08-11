@@ -64,6 +64,7 @@ class _LoginState extends State<Login> {
         await prefs.setString('plant', jsonResponse["data"]["user"]["PLANT"]);
         await prefs.setString(
             'plant_name', jsonResponse["data"]["user"]["COMPANY_NAME"]);
+        await prefs.setString('email', jsonResponse["data"]["user"]["EMAIL"]);
 
         // Redirect ke halaman beranda atau lakukan sesuatu setelah login berhasil
         Navigator.pushReplacementNamed(context, '/dashboard');
