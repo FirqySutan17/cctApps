@@ -59,6 +59,11 @@ class _LoginState extends State<Login> {
         await prefs.setString('token', token);
         await prefs.setString(
             'full_name', jsonResponse["data"]["user"]["FULL_NAME"]);
+        await prefs.setString(
+            'employee_id', jsonResponse["data"]["user"]["EMPLOYEE_ID"]);
+        await prefs.setString('plant', jsonResponse["data"]["user"]["PLANT"]);
+        await prefs.setString(
+            'plant_name', jsonResponse["data"]["user"]["COMPANY_NAME"]);
 
         // Redirect ke halaman beranda atau lakukan sesuatu setelah login berhasil
         Navigator.pushReplacementNamed(context, '/dashboard');

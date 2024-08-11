@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Menu extends StatefulWidget {
@@ -14,6 +12,7 @@ class Menu extends StatefulWidget {
 
 class _MenuState extends State<Menu> {
   String? _fullName = '';
+  String? _companyName = '';
 
   @override
   void initState() {
@@ -25,9 +24,11 @@ class _MenuState extends State<Menu> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Ambil nilai dari SharedPreferences
     String? fullName = prefs.getString('full_name');
+    String? companyName = prefs.getString('plant_name');
     // Update state dengan nilai yang diambil
     setState(() {
       _fullName = fullName;
+      _companyName = companyName;
     });
   }
 
@@ -106,13 +107,6 @@ class _MenuState extends State<Menu> {
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        // Text("Welcome,",
-                        //     textAlign: TextAlign.left,
-                        //     style: TextStyle(
-                        //         fontSize: 18,
-                        //         fontFamily: 'Cjfont',
-                        //         color: Colors.white,
-                        //         fontWeight: FontWeight.bold)),
                         Text(_fullName ?? 'ANONYMOUS',
                             textAlign: TextAlign.left,
                             style: TextStyle(
@@ -120,7 +114,7 @@ class _MenuState extends State<Menu> {
                                 fontFamily: 'Cjfont',
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold)),
-                        Text("IT SST",
+                        Text(_companyName ?? 'N/A',
                             textAlign: TextAlign.left,
                             style: TextStyle(
                                 fontSize: 16,

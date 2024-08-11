@@ -76,6 +76,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   String? _fullName = '';
+  String? _companyName = '';
   String? _tokenAPI = '';
 
   String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
@@ -130,10 +131,12 @@ class _DashboardState extends State<Dashboard> {
     // Ambil nilai dari SharedPreferences
     String? fullName = prefs.getString('full_name');
     String? token = prefs.getString('token');
+    String? companyName = prefs.getString('plant_name');
     // Update state dengan nilai yang diambil
     setState(() {
       _fullName = fullName;
       _tokenAPI = token;
+      _companyName = companyName;
     });
   }
 
@@ -429,13 +432,6 @@ class _DashboardState extends State<Dashboard> {
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text("Welcome,",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: 'Cjfont',
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold)),
                         Text(_fullName ?? 'ANONYMOUS',
                             textAlign: TextAlign.left,
                             style: TextStyle(
@@ -443,7 +439,7 @@ class _DashboardState extends State<Dashboard> {
                                 fontFamily: 'Cjfont',
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold)),
-                        Text("IT SST",
+                        Text(_companyName ?? 'N/A',
                             textAlign: TextAlign.left,
                             style: TextStyle(
                                 fontSize: 16,
