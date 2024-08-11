@@ -975,112 +975,114 @@ class VisitEntryState extends State<VisitEntry> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
-      appBar: AppBar(
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
-        title: const Text('VISIT ENTRY',
-            style: TextStyle(
-                fontSize: 18,
-                fontFamily: 'Cjfont',
-                color: Colors.black,
-                fontWeight: FontWeight.bold)),
-      ),
-      body: SafeArea(
-        child: Theme(
-          data: ThemeData(
-            canvasColor: Colors.white,
-            colorScheme: Theme.of(context).colorScheme.copyWith(
-                  primary: Color(0xffff9304),
-                  // background: Colors.red,
-                  // secondary: Colors.green,
-                ),
-          ),
-          child: Stepper(
-            controlsBuilder: (context, details) => Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top: 20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.red,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: const Text('VISIT ENTRY',
+              style: TextStyle(
+                  fontSize: 18,
+                  fontFamily: 'Cjfont',
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold)),
+        ),
+        body: SafeArea(
+          child: Theme(
+            data: ThemeData(
+              canvasColor: Colors.white,
+              colorScheme: Theme.of(context).colorScheme.copyWith(
+                    primary: Color(0xffff9304),
+                    // background: Colors.red,
+                    // secondary: Colors.green,
                   ),
-                  width: 165,
-                  height: 45,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      TextButton(
-                        // style: TextButton.styleFrom(
-                        // backgroundColor: Color(0xff007dc3)),
-                        onPressed: details.onStepCancel,
-                        child: Text(
-                          "Kembali",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 20),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Color(0xff007dc3),
-                  ),
-                  width: 165,
-                  height: 45,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      TextButton(
-                        // style: TextButton.styleFrom(
-                        // backgroundColor: Color(0xff007dc3)),
-                        onPressed: details.onStepContinue,
-                        child: Text(
-                          "Selanjutnya",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
             ),
-            type: StepperType.horizontal,
-            currentStep: _activeCurrentStep,
-            steps: stepList(),
-            onStepContinue: () {
-              if (_activeCurrentStep < (stepList().length - 1)) {
-                setState(() {
-                  _activeCurrentStep += 1;
-                });
-              }
-            },
-            onStepCancel: () {
-              if (_activeCurrentStep == 0) {
-                return;
-              }
+            child: Stepper(
+              controlsBuilder: (context, details) => Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.red,
+                    ),
+                    width: 165,
+                    height: 45,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        TextButton(
+                          // style: TextButton.styleFrom(
+                          // backgroundColor: Color(0xff007dc3)),
+                          onPressed: details.onStepCancel,
+                          child: Text(
+                            "Kembali",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Color(0xff007dc3),
+                    ),
+                    width: 165,
+                    height: 45,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        TextButton(
+                          // style: TextButton.styleFrom(
+                          // backgroundColor: Color(0xff007dc3)),
+                          onPressed: details.onStepContinue,
+                          child: Text(
+                            "Selanjutnya",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              type: StepperType.horizontal,
+              currentStep: _activeCurrentStep,
+              steps: stepList(),
+              onStepContinue: () {
+                if (_activeCurrentStep < (stepList().length - 1)) {
+                  setState(() {
+                    _activeCurrentStep += 1;
+                  });
+                }
+              },
+              onStepCancel: () {
+                if (_activeCurrentStep == 0) {
+                  return;
+                }
 
-              setState(() {
-                _activeCurrentStep -= 1;
-              });
-            },
-            onStepTapped: (int index) {
-              setState(() {
-                _activeCurrentStep = index;
-              });
-            },
+                setState(() {
+                  _activeCurrentStep -= 1;
+                });
+              },
+              onStepTapped: (int index) {
+                setState(() {
+                  _activeCurrentStep = index;
+                });
+              },
+            ),
           ),
         ),
       ),

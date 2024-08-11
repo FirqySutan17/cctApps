@@ -162,12 +162,14 @@ class _OverdueReportState extends State<OverdueReport> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : content(context),
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.white,
+        body: _isLoading
+            ? Center(child: CircularProgressIndicator())
+            : content(context),
+      ),
     );
   }
 

@@ -33,13 +33,15 @@ class _MenuState extends State<Menu> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
-      // decoration: BoxDecoration(
-      //     image: DecorationImage(image: AssetImage('assets/images/bg-blue.jpg'), fit: BoxFit.cover),
-      // ),
-      body: content(context),
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.white,
+        // decoration: BoxDecoration(
+        //     image: DecorationImage(image: AssetImage('assets/images/bg-blue.jpg'), fit: BoxFit.cover),
+        // ),
+        body: content(context),
+      ),
     );
   }
 
@@ -377,8 +379,7 @@ class _MenuState extends State<Menu> {
                     child: TextButton(
                       // style: TextButton.styleFrom(backgroundColor: Color(0xff007dc3)),
                       onPressed: () {
-                        Navigator.of(context)
-                            .pushReplacementNamed('/dashboard');
+                        Navigator.of(context).pushReplacementNamed('/profile');
                       },
                       child: Text("VIEW PROFILE",
                           textAlign: TextAlign.left,

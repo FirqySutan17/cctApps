@@ -8,6 +8,7 @@ import 'menu.dart';
 import 'visitentry.dart';
 import 'visitreport.dart';
 import 'overduereport.dart';
+import 'profile.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -21,6 +22,7 @@ void main() {
       '/visit-report': (context) => VisitReport(),
       '/overdue-report': (context) => OverdueReport(),
       '/collection-report': (context) => CollectionReport(),
+      '/profile': (context) => Profile(),
     },
   ));
 }

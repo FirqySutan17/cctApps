@@ -38,16 +38,18 @@ class _VisitReportDetailState extends State<VisitReportDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('VISIT DETAIL  - '),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text('VISIT DETAIL  - '),
+        ),
+        body: _isLoading
+            ? Center(child: CircularProgressIndicator())
+            : WebViewWidget(
+                controller: controller,
+              ),
       ),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : WebViewWidget(
-              controller: controller,
-            ),
     );
   }
 }

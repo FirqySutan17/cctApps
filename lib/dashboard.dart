@@ -234,15 +234,17 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
-      // decoration: BoxDecoration(
-      //     image: DecorationImage(image: AssetImage('assets/images/bg-blue.jpg'), fit: BoxFit.cover),
-      // ),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : content(context),
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.white,
+        // decoration: BoxDecoration(
+        //     image: DecorationImage(image: AssetImage('assets/images/bg-blue.jpg'), fit: BoxFit.cover),
+        // ),
+        body: _isLoading
+            ? Center(child: CircularProgressIndicator())
+            : content(context),
+      ),
     );
   }
 

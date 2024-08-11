@@ -105,22 +105,24 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      // decoration: BoxDecoration(
-      //     image: DecorationImage(image: AssetImage('assets/images/bg-white.jpg'), fit: BoxFit.cover),
-      // ),
-      // appBar: AppBar(
-      //     // toolbarHeight: 20,
-      //     // // backgroundColor: Color(0xff006dcd),
-      //     // backgroundColor: Color(0xff006dcd),
-      //     elevation: 0
-      // ),
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : content(),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        // decoration: BoxDecoration(
+        //     image: DecorationImage(image: AssetImage('assets/images/bg-white.jpg'), fit: BoxFit.cover),
+        // ),
+        // appBar: AppBar(
+        //     // toolbarHeight: 20,
+        //     // // backgroundColor: Color(0xff006dcd),
+        //     // backgroundColor: Color(0xff006dcd),
+        //     elevation: 0
+        // ),
+        body: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : content(),
+      ),
     );
   }
 
@@ -132,7 +134,7 @@ class _LoginState extends State<Login> {
             Container(
               margin: EdgeInsets.all(5),
               width: double.infinity,
-              height: 300,
+              height: 250,
               decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage('assets/images/bg-blue.jpg'),
