@@ -28,6 +28,7 @@ class _VisitReportDetailState extends State<VisitReportDetail> {
     String validAPI = await Apirepositories().checkWebViewUrl();
     String url = validAPI + '/visit/detail_mobile/' + widget.visitingNo;
     controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..loadRequest(
         Uri.parse(url),
       );

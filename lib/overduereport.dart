@@ -19,6 +19,7 @@ class _OverdueReportState extends State<OverdueReport> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _dateController = TextEditingController();
+  bool overdueNotEmpty = false;
 
   DateTime selectedDate = DateTime.now();
 
@@ -84,7 +85,8 @@ class _OverdueReportState extends State<OverdueReport> {
           'type': '*',
           'plant': plantValue,
           'pagination': _currentPage.toString(),
-          'first_time': isFirstTime.toString()
+          'first_time': isFirstTime.toString(),
+          'overdue_notempty': overdueNotEmpty.toString()
         },
       );
       print('current page : ' + _currentPage.toString());
@@ -389,6 +391,32 @@ class _OverdueReportState extends State<OverdueReport> {
                             );
                           }
                         },
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 10),
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10.0, bottom: 10.0, right: 5.0, left: 5.0),
+                          child: CheckboxListTile(
+                            title: Text(
+                              "Overdue > 0",
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontFamily: 'Cjfont',
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            value: overdueNotEmpty,
+                            onChanged: (newValue) {
+                              setState(() {
+                                overdueNotEmpty = newValue ?? false;
+                              });
+                            },
+                            controlAffinity: ListTileControlAffinity
+                                .trailing, //  <-- leading Checkbox
+                          ),
+                        ),
                       ),
                     ],
                   )),

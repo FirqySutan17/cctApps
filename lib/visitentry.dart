@@ -1,7 +1,14 @@
+import 'dart:io';
+
 import 'package:cct/repositories/apirepositories.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart'
+    as webview_flutter_android;
+import 'package:image_picker/image_picker.dart' as image_picker;
 
 class VisitEntry extends StatefulWidget {
   VisitEntry({super.key});
@@ -36,11 +43,55 @@ class _VisitEntryState extends State<VisitEntry> {
         ..loadRequest(
           Uri.parse(url),
         );
+      initFilePicker();
     }
 
     setState(() {
       _isLoading = false;
     });
+  }
+
+  initFilePicker() async {
+    if (Platform.isAndroid) {
+      final androidController = (controller.platform
+          as webview_flutter_android.AndroidWebViewController);
+      await androidController.setOnShowFileSelector(_androidFilePicker);
+    }
+  }
+
+  Future<List<String>> _androidFilePicker(
+      webview_flutter_android.FileSelectorParams params) async {
+    if (params.acceptTypes.any((type) => type == 'image/*')) {
+      final picker = image_picker.ImagePicker();
+      final photo =
+          await picker.pickImage(source: image_picker.ImageSource.camera);
+
+      if (photo == null) {
+        return [];
+      }
+      return [Uri.file(photo.path).toString()];
+    } else {
+      try {
+        if (params.mode ==
+            webview_flutter_android.FileSelectorMode.openMultiple) {
+          final attachments =
+              await FilePicker.platform.pickFiles(allowMultiple: true);
+          if (attachments == null) return [];
+
+          return attachments.files
+              .where((element) => element.path != null)
+              .map((e) => File(e.path!).uri.toString())
+              .toList();
+        } else {
+          final attachment = await FilePicker.platform.pickFiles();
+          if (attachment == null) return [];
+          File file = File(attachment.files.single.path!);
+          return [file.uri.toString()];
+        }
+      } catch (e) {
+        return [];
+      }
+    }
   }
 
   Future<void> getLoginSession() async {

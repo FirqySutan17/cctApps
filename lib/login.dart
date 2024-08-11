@@ -39,6 +39,7 @@ class _LoginState extends State<Login> {
       String validAPI = await Apirepositories().checkAPIUrl();
       urlAPI = validAPI;
       urlAPI = urlAPI + '/login';
+      print(urlAPI);
       var response = await http.post(
         Uri.parse(urlAPI),
         body: {
