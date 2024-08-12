@@ -33,6 +33,7 @@ class _CollectionReportState extends State<CollectionReport> {
   // String urlAPI = 'http://103.209.6.32:8080/cct-api/api';
   String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
   String? _tokenAPI = '';
+  String? plantAPI = '';
   bool _isLoading = false;
 
   @override
@@ -43,16 +44,15 @@ class _CollectionReportState extends State<CollectionReport> {
 
   Future<void> _initProcess() async {
     setState(() {
-      plantValue = '*';
       _isLoading = true;
-      _dateController.text = '2024-07-31';
     });
-
     await getLoginSession();
     if (_tokenAPI != null) {
       String validAPI = await Apirepositories().checkAPIUrl();
       setState(() {
         urlAPI = validAPI;
+        plantValue = plantAPI;
+        _dateController.text = '2024-07-31';
       });
       _fetchData(true);
     }
@@ -62,9 +62,11 @@ class _CollectionReportState extends State<CollectionReport> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Ambil nilai dari SharedPreferences
     String? token = prefs.getString('token');
+    String? plant = prefs.getString('plant');
     // Update state dengan nilai yang diambil
     setState(() {
       _tokenAPI = token;
+      plantAPI = plant;
     });
   }
 
@@ -652,7 +654,7 @@ class _CollectionReportState extends State<CollectionReport> {
                       ),
                       SizedBox(height: 15),
                       FutureBuilder<List<Plant>>(
-                        future: PlantRepositories().getDataPlant(),
+                        future: PlantRepositories().getDataPlant(plantAPI),
                         builder: (BuildContext context,
                             AsyncSnapshot<List<Plant>> snapshot) {
                           if (snapshot.connectionState ==

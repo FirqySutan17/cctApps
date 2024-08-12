@@ -34,6 +34,7 @@ class _VisitReportState extends State<VisitReport> {
 
   String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
   String? _tokenAPI = '';
+  String? plantAPI = '';
   bool _isLoading = false;
 
   @override
@@ -44,14 +45,7 @@ class _VisitReportState extends State<VisitReport> {
 
   Future<void> _initProcess() async {
     setState(() {
-      selectedStartDate =
-          DateTime(selectedEndDate.year, selectedEndDate.month, 1);
-      plantValue = '*';
       _isLoading = true;
-      _startDateController.text =
-          DateFormat('yyyy-MM-dd').format(selectedStartDate);
-      _endDateController.text =
-          DateFormat('yyyy-MM-dd').format(selectedEndDate);
     });
 
     await getLoginSession();
@@ -59,6 +53,13 @@ class _VisitReportState extends State<VisitReport> {
       String validAPI = await Apirepositories().checkAPIUrl();
       setState(() {
         urlAPI = validAPI;
+        selectedStartDate =
+            DateTime(selectedEndDate.year, selectedEndDate.month, 1);
+        plantValue = plantAPI;
+        _startDateController.text =
+            DateFormat('yyyy-MM-dd').format(selectedStartDate);
+        _endDateController.text =
+            DateFormat('yyyy-MM-dd').format(selectedEndDate);
       });
       _fetchData();
     }
@@ -68,9 +69,11 @@ class _VisitReportState extends State<VisitReport> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Ambil nilai dari SharedPreferences
     String? token = prefs.getString('token');
+    String? plant = prefs.getString('plant');
     // Update state dengan nilai yang diambil
     setState(() {
       _tokenAPI = token;
+      plantAPI = plant;
     });
   }
 
@@ -87,10 +90,6 @@ class _VisitReportState extends State<VisitReport> {
           'pagination': _currentPage.toString()
         },
       );
-      print('start date : ' + _startDateController.text.toString());
-      print('end date : ' + _endDateController.text.toString());
-      print('plant : ' + plantValue.toString());
-      print('current page : ' + _currentPage.toString());
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = jsonDecode(response.body);
         setState(() {
@@ -354,7 +353,7 @@ class _VisitReportState extends State<VisitReport> {
                       ),
                       SizedBox(height: 15),
                       FutureBuilder<List<Plant>>(
-                        future: PlantRepositories().getDataPlant(),
+                        future: PlantRepositories().getDataPlant(plantAPI),
                         builder: (BuildContext context,
                             AsyncSnapshot<List<Plant>> snapshot) {
                           if (snapshot.connectionState ==

@@ -38,6 +38,7 @@ class _OverdueReportState extends State<OverdueReport> {
   String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
 
   String? _tokenAPI = '';
+  String? plantAPI = '';
 
   bool _isLoading = false;
 
@@ -49,9 +50,7 @@ class _OverdueReportState extends State<OverdueReport> {
 
   Future<void> _initProcess() async {
     setState(() {
-      plantValue = '*';
       _isLoading = true;
-      _dateController.text = '2024-08-07';
     });
 
     await getLoginSession();
@@ -59,6 +58,8 @@ class _OverdueReportState extends State<OverdueReport> {
       String validAPI = await Apirepositories().checkAPIUrl();
       setState(() {
         urlAPI = validAPI;
+        plantValue = plantAPI;
+        _dateController.text = '2024-08-07';
       });
       _fetchData(true);
     }
@@ -68,9 +69,14 @@ class _OverdueReportState extends State<OverdueReport> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // Ambil nilai dari SharedPreferences
     String? token = prefs.getString('token');
+    String? plant = prefs.getString('plant');
+
+    plant = plant!.substring(0, plant.length - 1);
+    plant = plant + "0";
     // Update state dengan nilai yang diambil
     setState(() {
       _tokenAPI = token;
+      plantAPI = plant;
     });
   }
 
@@ -355,7 +361,8 @@ class _OverdueReportState extends State<OverdueReport> {
                       ),
                       SizedBox(height: 15),
                       FutureBuilder<List<Plant>>(
-                        future: PlantRepositories().getDataPlantOverdue(),
+                        future:
+                            PlantRepositories().getDataPlantOverdue(plantAPI),
                         builder: (BuildContext context,
                             AsyncSnapshot<List<Plant>> snapshot) {
                           if (snapshot.connectionState ==
