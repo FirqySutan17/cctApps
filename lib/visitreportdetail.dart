@@ -43,7 +43,7 @@ class _VisitReportDetailState extends State<VisitReportDetail> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text('VISIT DETAIL  - '),
+          title: Text('VISIT DETAIL'),
         ),
         body: _isLoading
             ? Center(child: CircularProgressIndicator())

@@ -810,25 +810,37 @@ class _DashboardState extends State<Dashboard> {
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text("RUNNING CUSTOMER",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: 'Cjfont',
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                              Text("JULY 2024",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: 'Cjfont',
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                              Text("TOP 5",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: 'Cjfont',
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontStyle: FontStyle.italic)),
+                              Text(
+                                "TOP 5 COLLECTION",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'Cjfont',
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                              Text(
+                                "for RUNNING CUSTOMER",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: 'Cjfont',
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                "JULY 2024",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'Cjfont',
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ]),
                       ),
                     ),
@@ -890,25 +902,36 @@ class _DashboardState extends State<Dashboard> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text("RUNNING CUSTOMER",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontFamily: 'Cjfont',
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
-                            Text("JULY 2024",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontFamily: 'Cjfont',
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
-                            Text("BOTTOM 5",
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontFamily: 'Cjfont',
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontStyle: FontStyle.italic)),
+                            Text(
+                              "BOTTOM 5 COLLECTION",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: 'Cjfont',
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                            Text(
+                              "for RUNNING CUSTOMER",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontFamily: 'Cjfont',
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              "JULY 2024",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: 'Cjfont',
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -971,25 +994,34 @@ class _DashboardState extends State<Dashboard> {
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text("STOP CUSTOMER",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: 'Cjfont',
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                              Text("JULY 2024",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: 'Cjfont',
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                              Text("TOP 5",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: 'Cjfont',
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontStyle: FontStyle.italic)),
+                              Text(
+                                "TOP 5 COLLECTION",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'Cjfont',
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                              Text(
+                                "for STOP CUSTOMER",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: 'Cjfont',
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                "JULY 2024",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'Cjfont',
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ]),
                       ),
                     ),
@@ -1049,28 +1081,38 @@ class _DashboardState extends State<Dashboard> {
                           top: 20.0, right: 15.0, left: 15.0),
                       child: Container(
                         child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text("STOP CUSTOMER",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: 'Cjfont',
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                              Text("JULY 2024",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: 'Cjfont',
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold)),
-                              Text("BOTTOM 5",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontFamily: 'Cjfont',
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontStyle: FontStyle.italic)),
-                            ]),
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              "BOTTOM 5 COLLECTION",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: 'Cjfont',
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                            Text(
+                              "for STOP CUSTOMER",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontFamily: 'Cjfont',
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              "JULY 2024",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: 'Cjfont',
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
