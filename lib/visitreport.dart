@@ -226,27 +226,36 @@ class _VisitReportState extends State<VisitReport> {
                                 fontFamily: 'Cjfont',
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold)),
-                        Text(visit.companyName,
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontFamily: 'Cjfont',
-                              color: Colors.black,
-                            )),
-                        Text("${visit.customerCode} -${visit.customerName}",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontFamily: 'Cjfont',
-                              color: Colors.black,
-                            )),
-                        Text(visit.drafterName,
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontFamily: 'Cjfont',
-                              color: Colors.black,
-                            )),
+                        Text(
+                          visit.companyName,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontFamily: 'Cjfont',
+                            color: Colors.black,
+                          ),
+                        ),
+                        Text(
+                          visit.customerName,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontFamily: 'Cjfont',
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          visit.drafterName,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontFamily: 'Cjfont',
+                            color: Colors.black,
+                          ),
+                        ),
                       ],
                     ),
                   ),
