@@ -19,7 +19,7 @@ class _OverdueReportState extends State<OverdueReport> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _dateController = TextEditingController();
-  bool overdueNotEmpty = false;
+  bool overdueNotEmpty = true;
 
   DateTime selectedDate = DateTime.now();
 
@@ -71,8 +71,12 @@ class _OverdueReportState extends State<OverdueReport> {
     String? token = prefs.getString('token');
     String? plant = prefs.getString('plant');
 
-    plant = plant!.substring(0, plant.length - 1);
-    plant = plant + "0";
+    if (plant != "*") {
+      plant = plant! + "-";
+      plant = plant.replaceAll("2-", "0");
+    }
+
+    print('plant ' + plant.toString());
     // Update state dengan nilai yang diambil
     setState(() {
       _tokenAPI = token;
@@ -95,7 +99,13 @@ class _OverdueReportState extends State<OverdueReport> {
           'overdue_notempty': overdueNotEmpty.toString()
         },
       );
-      print('current page : ' + _currentPage.toString());
+      print('date : ' + _dateController.text);
+      print('type : *');
+      print('plant : ' + plantValue.toString());
+      print('pagination : ' + _currentPage.toString());
+      print('first_time : ' + isFirstTime.toString());
+      print('overdue_notempty : ' + overdueNotEmpty.toString());
+      print('response ' + response.toString());
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = jsonDecode(response.body);
         setState(() {
