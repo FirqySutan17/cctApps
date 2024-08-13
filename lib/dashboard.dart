@@ -11,19 +11,30 @@ class DailyRemainder {
   final String collection;
   final String overDue;
   final String badDebt;
+  final String marginCOLL;
+  final String marginOD;
+  final String marginBD;
 
-  DailyRemainder(
-      {required this.title,
-      required this.collection,
-      required this.overDue,
-      required this.badDebt});
+  DailyRemainder({
+    required this.title,
+    required this.collection,
+    required this.overDue,
+    required this.badDebt,
+    required this.marginCOLL,
+    required this.marginOD,
+    required this.marginBD,
+  });
 
   factory DailyRemainder.fromJSON(Map<String, dynamic> json) {
     return DailyRemainder(
-        title: json['YMD'],
-        collection: json['COLL'].toString(),
-        overDue: json['OD'].toString(),
-        badDebt: json['BD'].toString());
+      title: json['YMD'],
+      collection: json['COLL'].toString(),
+      overDue: json['OD'].toString(),
+      badDebt: json['BD'].toString(),
+      marginCOLL: json['COLL_MARGIN'].toString(),
+      marginOD: json['OD_MARGIN'].toString(),
+      marginBD: json['BD_MARGIN'].toString(),
+    );
   }
 }
 
@@ -32,19 +43,30 @@ class MonthlyRemainder {
   final String collection;
   final String overDue;
   final String badDebt;
+  final String marginCOLL;
+  final String marginOD;
+  final String marginBD;
 
-  MonthlyRemainder(
-      {required this.title,
-      required this.collection,
-      required this.overDue,
-      required this.badDebt});
+  MonthlyRemainder({
+    required this.title,
+    required this.collection,
+    required this.overDue,
+    required this.badDebt,
+    required this.marginCOLL,
+    required this.marginOD,
+    required this.marginBD,
+  });
 
   factory MonthlyRemainder.fromJSON(Map<String, dynamic> json) {
     return MonthlyRemainder(
-        title: json['YYMM'],
-        collection: json['COLL'].toString(),
-        overDue: json['OD'].toString(),
-        badDebt: json['BD'].toString());
+      title: json['YYMM'],
+      collection: json['COLL'].toString(),
+      overDue: json['OD'].toString(),
+      badDebt: json['BD'].toString(),
+      marginCOLL: json['COLL_MARGIN'].toString(),
+      marginOD: json['OD_MARGIN'].toString(),
+      marginBD: json['BD_MARGIN'].toString(),
+    );
   }
 }
 
@@ -83,10 +105,24 @@ class _DashboardState extends State<Dashboard> {
   bool _isLoading = false;
   bool isIncludeData = false;
 
-  DailyRemainder? _dailyRemainder =
-      DailyRemainder(title: '', collection: '', overDue: '', badDebt: '');
-  MonthlyRemainder? _monthlyRemainder =
-      MonthlyRemainder(title: '', collection: '', overDue: '', badDebt: '');
+  DailyRemainder? _dailyRemainder = DailyRemainder(
+    title: '',
+    collection: '',
+    overDue: '',
+    badDebt: '',
+    marginCOLL: '',
+    marginOD: '',
+    marginBD: '',
+  );
+  MonthlyRemainder? _monthlyRemainder = MonthlyRemainder(
+    title: '',
+    collection: '',
+    overDue: '',
+    badDebt: '',
+    marginCOLL: '',
+    marginOD: '',
+    marginBD: '',
+  );
 
   List<UserRanking> _runningTOP = [];
   List<UserRanking> _runningBOTTOM = [];
@@ -553,10 +589,17 @@ class _DashboardState extends State<Dashboard> {
                                             fontFamily: 'Cjfont',
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold)),
+                                    Text("[ ${_dailyRemainder!.marginCOLL} ]",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontFamily: 'Cjfont',
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold)),
                                     Text(_dailyRemainder!.collection,
                                         textAlign: TextAlign.right,
                                         style: TextStyle(
-                                            fontSize: 25,
+                                            fontSize: 22,
                                             fontFamily: 'Cjfont',
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold)),
@@ -593,10 +636,17 @@ class _DashboardState extends State<Dashboard> {
                                             fontFamily: 'Cjfont',
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold)),
+                                    Text("[ ${_dailyRemainder!.marginOD} ]",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontFamily: 'Cjfont',
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold)),
                                     Text(_dailyRemainder!.overDue,
                                         textAlign: TextAlign.right,
                                         style: TextStyle(
-                                            fontSize: 25,
+                                            fontSize: 22,
                                             fontFamily: 'Cjfont',
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold)),
@@ -631,9 +681,16 @@ class _DashboardState extends State<Dashboard> {
                                             fontFamily: 'Cjfont',
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold)),
+                                    Text("[ ${_dailyRemainder!.marginBD} ]",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontFamily: 'Cjfont',
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold)),
                                     Text(_dailyRemainder!.badDebt,
                                         style: TextStyle(
-                                            fontSize: 25,
+                                            fontSize: 22,
                                             fontFamily: 'Cjfont',
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold)),
@@ -709,10 +766,17 @@ class _DashboardState extends State<Dashboard> {
                                             fontFamily: 'Cjfont',
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold)),
+                                    Text("[ ${_monthlyRemainder!.marginCOLL} ]",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontFamily: 'Cjfont',
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold)),
                                     Text(_monthlyRemainder!.collection,
                                         textAlign: TextAlign.right,
                                         style: TextStyle(
-                                            fontSize: 25,
+                                            fontSize: 22,
                                             fontFamily: 'Cjfont',
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold)),
@@ -749,10 +813,17 @@ class _DashboardState extends State<Dashboard> {
                                             fontFamily: 'Cjfont',
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold)),
+                                    Text("[ ${_monthlyRemainder!.marginOD} ]",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontFamily: 'Cjfont',
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold)),
                                     Text(_monthlyRemainder!.overDue,
                                         textAlign: TextAlign.right,
                                         style: TextStyle(
-                                            fontSize: 25,
+                                            fontSize: 22,
                                             fontFamily: 'Cjfont',
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold)),
@@ -787,9 +858,16 @@ class _DashboardState extends State<Dashboard> {
                                             fontFamily: 'Cjfont',
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold)),
+                                    Text("[ ${_monthlyRemainder!.marginBD} ]",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontFamily: 'Cjfont',
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold)),
                                     Text(_monthlyRemainder!.badDebt,
                                         style: TextStyle(
-                                            fontSize: 25,
+                                            fontSize: 22,
                                             fontFamily: 'Cjfont',
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold)),
