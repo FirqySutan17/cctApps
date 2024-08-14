@@ -496,35 +496,52 @@ class _DashboardState extends State<Dashboard> {
                   topLeft: Radius.elliptical(35, 35),
                 ),
               ),
-              padding: const EdgeInsets.all(15.0),
+              padding: const EdgeInsets.only(
+                left: 15,
+                right: 15,
+                top: 15,
+                bottom: 5,
+              ),
               child: Column(
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 10),
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 10.0, bottom: 10.0, right: 5.0, left: 5.0),
-                      child: CheckboxListTile(
-                        title: Text(
-                          "Incl. Internal",
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        width: 215,
+                        child: CheckboxListTile(
+                          title: Text(
+                            "Incl. Internal",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Cjfont',
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          value: isIncludeData,
+                          onChanged: (newValue) {
+                            setState(() {
+                              isIncludeData = newValue ?? false;
+                            });
+                            refreshData();
+                          },
+                          controlAffinity: ListTileControlAffinity
+                              .leading, //  <-- leading Checkbox
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          "* In Million",
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 14,
                             fontFamily: 'Cjfont',
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        value: isIncludeData,
-                        onChanged: (newValue) {
-                          setState(() {
-                            isIncludeData = newValue ?? false;
-                          });
-                          refreshData();
-                        },
-                        controlAffinity: ListTileControlAffinity
-                            .leading, //  <-- leading Checkbox
                       ),
-                    ),
+                    ],
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 10),
@@ -551,12 +568,27 @@ class _DashboardState extends State<Dashboard> {
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold)),
                           SizedBox(height: 5),
-                          Text(_dailyRemainder!.title,
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: 'Cjfont',
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold)),
+                          Text(
+                            _dailyRemainder!.title,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'Cjfont',
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            "* compare with previous day",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontFamily: 'Cjfont',
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -734,6 +766,18 @@ class _DashboardState extends State<Dashboard> {
                                   fontFamily: 'Cjfont',
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold)),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            "* compare with previous month",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontFamily: 'Cjfont',
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
