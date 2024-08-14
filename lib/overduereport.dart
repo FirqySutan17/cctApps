@@ -236,6 +236,8 @@ class _OverdueReportState extends State<OverdueReport> {
               ),
               child: Container(
                 child: Accordion(
+                  maxOpenSections: 1,
+                  disableScrolling: true,
                   headerBorderColor: Colors.white,
                   headerBorderColorOpened: Colors.transparent,
                   // headerBorderWidth: 1,
@@ -256,7 +258,7 @@ class _OverdueReportState extends State<OverdueReport> {
                       rightIcon: const Icon(
                         Icons.keyboard_arrow_down,
                         color: Colors.black54,
-                        size: 35,
+                        size: 25,
                       ),
                       headerBackgroundColor: Colors.white,
                       // leftIcon: const Icon(Icons.text_fields_rounded,
