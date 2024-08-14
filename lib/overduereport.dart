@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:accordion/accordion.dart';
 import 'dart:convert';
 import 'package:cct/repositories/plantrepositories.dart';
 
@@ -214,7 +215,7 @@ class _OverdueReportState extends State<OverdueReport> {
                   top: 0.0, bottom: 0.0, right: 10.0, left: 10.0),
               width: double.infinity,
               padding: const EdgeInsets.only(
-                  top: 15.0, bottom: 0.0, right: 15.0, left: 15.0),
+                  top: 0.0, bottom: 0.0, right: 15.0, left: 15.0),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -234,78 +235,204 @@ class _OverdueReportState extends State<OverdueReport> {
                 ),
               ),
               child: Container(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Accordion(
+                  headerBorderColor: Colors.white,
+                  headerBorderColorOpened: Colors.transparent,
+                  // headerBorderWidth: 1,
+                  headerBackgroundColorOpened: Colors.white,
+                  contentBackgroundColor: Colors.white,
+                  contentBorderColor: Colors.white,
+                  contentBorderWidth: 1,
+                  contentHorizontalPadding: 0,
+                  // scaleWhenAnimating: true,
+                  // openAndCloseAnimation: true,
+                  headerPadding:
+                      const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                  // sectionOpeningHapticFeedback: SectionHapticFeedback.heavy,
+                  // sectionClosingHapticFeedback: SectionHapticFeedback.light,
                   children: [
-                    Container(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(item.date,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 12.5,
-                                fontFamily: 'Cjfont',
-                                color: Colors.black,
-                              )),
-                          Text("[${item.customer}] ${item.customerName}",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  fontSize: 14,
+                    AccordionSection(
+                      isOpen: false,
+                      rightIcon: const Icon(
+                        Icons.keyboard_arrow_down,
+                        color: Colors.black54,
+                        size: 35,
+                      ),
+                      headerBackgroundColor: Colors.white,
+                      // leftIcon: const Icon(Icons.text_fields_rounded,
+                      //     color: Colors.white),
+                      // headerBackgroundColorOpened: Colors.black87,
+                      // headerBorderColorOpened: const Color(0xffaaaaaa),
+                      // headerBorderWidth: 1,
+                      // contentBackgroundColor: Colors.black54,
+                      // contentBorderColor: const Color(0xffaaaaaa),
+                      // contentBorderWidth: 1,
+                      // contentBorderRadius: 0,
+                      contentHorizontalPadding: 0.0,
+                      header: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(item.date,
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  fontSize: 12.5,
                                   fontFamily: 'Cjfont',
                                   color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(item.businessArea,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontFamily: 'Cjfont',
-                                color: Colors.black,
-                              )),
-                          Text("GC : ${item.groupCustomerName}",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontFamily: 'Cjfont',
-                                color: Colors.black,
-                              )),
-                          Text("SALES : ${item.salesName}",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontFamily: 'Cjfont',
-                                color: Colors.black,
-                              )),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(item.stopValue == "0" ? "OVERDUE :" : "STOP :",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontFamily: 'Cjfont',
-                                color: Colors.black,
-                              )),
-                          Text(
-                              item.stopValue == "0"
-                                  ? item.overdueValue
-                                  : item.stopValue,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                fontSize: 26,
-                                fontFamily: 'Cjfont',
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              )),
-                          SizedBox(
-                            height: 8,
-                          ),
-                        ],
+                                )),
+                            Text("[${item.customer}] ${item.customerName}",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: 'Cjfont',
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold)),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(item.businessArea,
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontFamily: 'Cjfont',
+                                  color: Colors.black,
+                                )),
+                            Text("GC : ${item.groupCustomerName}",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontFamily: 'Cjfont',
+                                  color: Colors.black,
+                                )),
+                            Text("SALES : ${item.salesName}",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontFamily: 'Cjfont',
+                                  color: Colors.black,
+                                )),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(item.stopValue == "0" ? "OVERDUE :" : "STOP :",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontFamily: 'Cjfont',
+                                  color: Colors.black,
+                                )),
+                            Text(
+                                item.stopValue == "0"
+                                    ? item.overdueValue
+                                    : item.stopValue,
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                  fontSize: 26,
+                                  fontFamily: 'Cjfont',
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            // SizedBox(
+                            //   height: 8,
+                            // ),
+                          ],
+                        ),
+                      ),
+                      content: Container(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text("BEGINNING :",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontFamily: 'Cjfont',
+                                      color: Colors.black,
+                                    )),
+                                Text(" " + item.beginningValue,
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Cjfont',
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text("DEBIT :",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontFamily: 'Cjfont',
+                                      color: Colors.black,
+                                    )),
+                                Text(" " + item.debitValue,
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Cjfont',
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text("CREDIT :",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontFamily: 'Cjfont',
+                                      color: Colors.black,
+                                    )),
+                                Text(" " + item.creditValue,
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Cjfont',
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text("ENDING :",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontFamily: 'Cjfont',
+                                      color: Colors.black,
+                                    )),
+                                Text(" " + item.endingValue,
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Cjfont',
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],

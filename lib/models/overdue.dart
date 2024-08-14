@@ -8,6 +8,10 @@ class Overdue {
   final String salesName;
   final String overdueValue;
   final String stopValue;
+  final String beginningValue;
+  final String debitValue;
+  final String creditValue;
+  final String endingValue;
 
   Overdue({
     required this.businessArea,
@@ -19,6 +23,10 @@ class Overdue {
     required this.salesName,
     required this.overdueValue,
     required this.stopValue,
+    required this.beginningValue,
+    required this.debitValue,
+    required this.creditValue,
+    required this.endingValue,
   });
 
   factory Overdue.fromJSON(Map<String, dynamic> json) {
@@ -34,6 +42,10 @@ class Overdue {
       salesName: json['SALESMAN'].toString(),
       overdueValue: json['OVERDUE'].toString(),
       stopValue: json['STOP'].toString(),
+      beginningValue: json['BEGINNING'].toString(),
+      debitValue: json['DEBIT'].toString(),
+      creditValue: json['CREDIT'].toString(),
+      endingValue: json['ENDING'].toString(),
     );
   }
 }
