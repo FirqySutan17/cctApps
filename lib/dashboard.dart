@@ -100,6 +100,7 @@ class _DashboardState extends State<Dashboard> {
   String? _fullName = '';
   String? _companyName = '';
   String? _tokenAPI = '';
+  String? periodeCollection = '';
 
   String urlAPI = 'http://10.137.26.67:8080/cct-api/api';
   bool _isLoading = false;
@@ -243,6 +244,7 @@ class _DashboardState extends State<Dashboard> {
         List<dynamic> stopTOP = jsonResponse["data"]["STOP"]["TOP"];
         List<dynamic> stopBOTTOM = jsonResponse["data"]["STOP"]["BOTTOM"];
         setState(() {
+          periodeCollection = jsonResponse["data"]["PERIODE"].toString();
           _runningTOP = runningTOP
               .map((itemJson) => UserRanking.fromJSON(itemJson))
               .toList();
@@ -954,7 +956,7 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                               ),
                               Text(
-                                "JULY 2024",
+                                periodeCollection.toString(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 20,
@@ -1046,7 +1048,7 @@ class _DashboardState extends State<Dashboard> {
                               ),
                             ),
                             Text(
-                              "JULY 2024",
+                              periodeCollection.toString(),
                               style: TextStyle(
                                 fontSize: 20,
                                 fontFamily: 'Cjfont',
@@ -1136,7 +1138,7 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                               ),
                               Text(
-                                "JULY 2024",
+                                periodeCollection.toString(),
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontFamily: 'Cjfont',
@@ -1225,7 +1227,7 @@ class _DashboardState extends State<Dashboard> {
                               ),
                             ),
                             Text(
-                              "JULY 2024",
+                              periodeCollection.toString(),
                               style: TextStyle(
                                 fontSize: 20,
                                 fontFamily: 'Cjfont',
