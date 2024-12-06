@@ -213,6 +213,27 @@ class _ProfileState extends State<Profile> {
                   //   ),
                   // ),
                   const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          bottom: 0.0, right: 15.0, left: 15.0),
+                      child: Container(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text('v2.0',
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold)),
+                            ]),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
                     height: 20,
                   ),
                   Container(

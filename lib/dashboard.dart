@@ -511,10 +511,10 @@ class _DashboardState extends State<Dashboard> {
                     children: [
                       Container(
                         alignment: Alignment.centerLeft,
-                        width: 215,
+                        width: 207,
                         child: CheckboxListTile(
                           title: Text(
-                            "Incl. Internal",
+                            "incl. internal",
                             style: TextStyle(
                               fontSize: 14,
                               fontFamily: 'Cjfont',
@@ -535,7 +535,7 @@ class _DashboardState extends State<Dashboard> {
                       Container(
                         alignment: Alignment.centerRight,
                         child: Text(
-                          "* In Million",
+                          "* in million",
                           style: TextStyle(
                             fontSize: 14,
                             fontFamily: 'Cjfont',
@@ -571,7 +571,7 @@ class _DashboardState extends State<Dashboard> {
                                   fontWeight: FontWeight.bold)),
                           SizedBox(height: 5),
                           Text(
-                            _dailyRemainder!.title,
+                            _dailyRemainder!.title.toUpperCase(),
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: 'Cjfont',
@@ -762,7 +762,7 @@ class _DashboardState extends State<Dashboard> {
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold)),
                           SizedBox(height: 5),
-                          Text(_monthlyRemainder!.title,
+                          Text(_monthlyRemainder!.title.toUpperCase(),
                               style: TextStyle(
                                   fontSize: 20,
                                   fontFamily: 'Cjfont',
@@ -956,7 +956,7 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                               ),
                               Text(
-                                periodeCollection.toString(),
+                                periodeCollection.toString().toUpperCase(),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 20,
@@ -1048,7 +1048,7 @@ class _DashboardState extends State<Dashboard> {
                               ),
                             ),
                             Text(
-                              periodeCollection.toString(),
+                              periodeCollection.toString().toUpperCase(),
                               style: TextStyle(
                                 fontSize: 20,
                                 fontFamily: 'Cjfont',
@@ -1138,7 +1138,7 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                               ),
                               Text(
-                                periodeCollection.toString(),
+                                periodeCollection.toString().toUpperCase(),
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontFamily: 'Cjfont',
@@ -1227,7 +1227,7 @@ class _DashboardState extends State<Dashboard> {
                               ),
                             ),
                             Text(
-                              periodeCollection.toString(),
+                              periodeCollection.toString().toUpperCase(),
                               style: TextStyle(
                                 fontSize: 20,
                                 fontFamily: 'Cjfont',

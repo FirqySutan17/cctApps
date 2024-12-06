@@ -9,6 +9,7 @@ import 'visitentry.dart';
 import 'visitreport.dart';
 import 'overduereport.dart';
 import 'profile.dart';
+import 'customerloc.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -23,6 +24,7 @@ void main() {
       '/overdue-report': (context) => OverdueReport(),
       '/collection-report': (context) => CollectionReport(),
       '/profile': (context) => Profile(),
+      '/customer-location': (context) => CustomerLocation(),
     },
   ));
 }

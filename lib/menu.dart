@@ -363,6 +363,117 @@ class _MenuState extends State<Menu> {
                   SizedBox(
                     height: 10,
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed('/customer-location');
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(right: 5),
+                            // width: 160,
+                            // height: 300,
+                            padding: const EdgeInsets.only(
+                                top: 15.0,
+                                bottom: 15.0,
+                                right: 10.0,
+                                left: 10.0),
+                            decoration: BoxDecoration(
+                              color: Color(0xff007dc3),
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.elliptical(10, 10),
+                                topLeft: Radius.elliptical(10, 10),
+                                bottomRight: Radius.elliptical(10, 10),
+                                bottomLeft: Radius.elliptical(10, 10),
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                                Text("CUSTOMER",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: 'Cjfont',
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold)),
+                                Text("LOCATION",
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: 'Cjfont',
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold)),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Image.asset(
+                                    'assets/images/customer-location.png',
+                                    width: 100,
+                                    height: 100)
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            // Navigator.of(context).pushNamed('/overdue-report');
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(left: 5),
+                            // width: 160,
+                            height: 180,
+                            padding: const EdgeInsets.only(
+                                top: 15.0,
+                                bottom: 15.0,
+                                right: 10.0,
+                                left: 10.0),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFE2E2E2),
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.elliptical(10, 10),
+                                topLeft: Radius.elliptical(10, 10),
+                                bottomRight: Radius.elliptical(10, 10),
+                                bottomLeft: Radius.elliptical(10, 10),
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                                // Text("OVERDUE",
+                                //     textAlign: TextAlign.left,
+                                //     style: TextStyle(
+                                //         fontSize: 14,
+                                //         fontFamily: 'Cjfont',
+                                //         color: Colors.white,
+                                //         fontWeight: FontWeight.bold)),
+                                // Text("REPORT",
+                                //     textAlign: TextAlign.left,
+                                //     style: TextStyle(
+                                //         fontSize: 14,
+                                //         fontFamily: 'Cjfont',
+                                //         color: Colors.white,
+                                //         fontWeight: FontWeight.bold)),
+                                // SizedBox(
+                                //   height: 10,
+                                // ),
+                                // Image.asset(
+                                //     'assets/images/icon-overdue-report.png',
+                                //     width: 100,
+                                //     height: 100)
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Container(
                     width: double.infinity,
                     height: 50,
